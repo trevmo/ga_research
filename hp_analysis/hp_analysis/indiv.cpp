@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "indiv.h"
+#include "util.h"
 #include <cstdlib>
 
 indiv::indiv() {
@@ -18,22 +19,49 @@ void indiv::copy(indiv source) {
 }
 
 void indiv::calcFit() {
-	// attackType == 0 means fixed damage, so take the ceiling of the number of time health is divisable by damage
-	if (attackType == 0) { // fixed damage
+	switch (attackType)
+	{
+	case 0:
+		//attackType == 0 means fixed damage, so take the ceiling of 
+		//the number of time health is divisable by damage
 		fitness = ceil((double)genome[0] / (double)damageAmount);
+		break;
+	case 1:
+		//attackType == 1 means uniformly distributed random damage,
+		calcFit(uniformDistDamage, meanDamage, rangeDamage);
+		break;
+	case 2:
+		//attackType == 2 means Gaussian distributed random damage
+		//similar to case 1 with a different approach to random number generation
+
+		//mean = 3; stdDev = 1 -- shifts normal distribution so that 99.7% of 
+		//values are positive
+		calcFit(gaussianDamage, 3, 1);
+		break;
+	default:
+		break;
 	}
-	// attackType == 1 means uniformly distributed random damage, so loop doing random damage until health is gone
-	if (attackType == 1) {  // uniform distribution
-		float health = genome[0];
-		float damage;
-		fitness = 0;
-		while (health > 0) {
-			damage = meanDamage - rangeDamage + (rand() % (int)(2 * rangeDamage + 1));
-			health -= damage;
-			fitness++; // one fitness per hit
-		}
+}
+/**
+ * Calculates the fitness of the individual when using a variable amount of damage
+ * (currently either uniform or gaussian distributions). Loop doing the variable
+ * amount of damage until the health is gone to determine the fitness.
+ * @param calcDamage pointer to damage function
+ * @param arg1 first argument to calcDamage
+ * @param arg2 second argument to calcDamage
+ */
+void indiv::calcFit(double(*calcDamage)(double, double), double arg1, double arg2)
+{
+	float health = genome[0];
+	float damage;
+	fitness = 0;
+	while (health > 0) {
+		damage = calcDamage(arg1, arg2);
+		//on the off chance it is negative, flip the sign
+		damage = (damage < 0 ? -1 * damage : damage);
+		health -= damage;
+		fitness++; // one fitness per hit
 	}
-	// an attackType with a gaussian distribution would be an interesting comparison
 }
 
 void indiv::print() {
