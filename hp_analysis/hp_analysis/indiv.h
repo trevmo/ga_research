@@ -6,7 +6,7 @@ private:
 	int genome[genomeLength];
 	double fitness;
 
-	void calcFit(double(*calcDamage)(double, double), double arg1, double arg2);
+	void calcFit(double(*calcDamage)(double, double));
 public:
 	indiv();
 	void print();

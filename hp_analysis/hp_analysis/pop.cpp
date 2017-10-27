@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "pop.h"
+#include "util.h"
 #include <iostream>
 
 pop::pop() {
@@ -19,6 +20,29 @@ void pop::print() {
 	}
 	printf("\n");
 
+}
+void pop::openCsv(string filename, time_t time)
+{
+	csv = new ofstream;
+	csv->open(filename.c_str(), fstream::out);
+	if (csv->fail())
+		cout << "fail";
+	printHeader(*csv, time);
+	*csv << "Generation,AvgFit,BestFit\n";
+}
+void pop::printToCsv(int generation) {
+	if (csv->is_open()) {
+		for (int i = 0; i < popSize; i++)
+			the_pop[i].calcFit();
+		calcAvgs();
+		*csv << generation << "," << avgFit << "," << bestFit << endl;
+	}
+	else
+		cout << ".csv file has not yet been opened.\n";
+}
+void pop::closeCsv()
+{
+	csv->close();
 }
 
 void pop::calcAvgs() {
