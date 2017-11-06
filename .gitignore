@@ -46,3 +46,8 @@ x64/
 *.PNG
 testing/
 initial_files/
+*stdafx*
+*targetver.h
+papers/
+gaussian_dist/
+results/
