@@ -1,4 +1,12 @@
 #pragma once
+
+/**
+ * This file contains the interface for various utility functions used
+ * throughout the project.
+ *
+ * @author trevmo
+ */
+
 #include <cstdlib>
 #include <cmath>
 #include <limits>

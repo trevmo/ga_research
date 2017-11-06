@@ -1,4 +1,11 @@
 #pragma once
+
+/**
+* This file contains global variables used for controlling aspects of the project.
+*
+* @author trevmo
+*/
+
 const int genomeLength = 1;   // currently only one gene - health
 const int maxInitHealth = 10;  // maximum initial health
 const int mutateType = 0;  // 0-uniform

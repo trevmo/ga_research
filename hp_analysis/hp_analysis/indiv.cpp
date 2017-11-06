@@ -1,24 +1,42 @@
+/**
+ * This file contains the implementations of the methods for the Individual class.
+ *
+ * @author tsoule
+ * @author trevmo
+ */
+
 #include "stdafx.h"
 #include "indiv.h"
 #include "util.h"
 #include <cstdlib>
 
-indiv::indiv() {
+/**
+ * Base constructor for the Individual class. Initializes an 
+ * individual with a random genome.
+ */
+Individual::Individual() {
 	for (int i = 0; i < genomeLength; i++) {
 		// initial health is between 1 and the max initial health
 		genome[i] = 1 + rand() % (maxInitHealth);
 	}
 }
-
-void indiv::copy(indiv source) {
+/**
+ * Make a copy of an individual.
+ * @param source original individual to copy
+ */
+void Individual::copy(Individual source) {
 	// deep copy
 	for (int i = 0; i < genomeLength; i++) {
 		genome[i] = source.genome[i];
 	}
 	fitness = source.fitness;
 }
-
-void indiv::calcFit() {
+/**
+ * Calculate the fitness of the individual. This depends on the attack type
+ * as the fitness is the measure of how long the health lasts while undergoing
+ * a particular attack.
+ */
+void Individual::calcFit() {
 	switch (attackType)
 	{
 	case 0:
@@ -45,7 +63,7 @@ void indiv::calcFit() {
  * amount of damage until the health is gone to determine the fitness.
  * @param calcDamage pointer to damage function
  */
-void indiv::calcFit(double(*calcDamage)(double, double))
+void Individual::calcFit(double(*calcDamage)(double, double))
 {
 	float health = genome[0];
 	float damage;
@@ -58,18 +76,24 @@ void indiv::calcFit(double(*calcDamage)(double, double))
 		fitness++; // one fitness per hit
 	}
 }
-
-void indiv::print() {
+/**
+ * Print out the genome and fitness of the individual.
+ */
+void Individual::print() {
 	for (int i = 0; i < genomeLength; i++) {
 		printf("%d ", genome[i]);
 	}
 	printf(" : %f\n", fitness);
 }
-
-void indiv::mutate() {
+/**
+ * Mutate the genome of the individual. Currently, the only option is to perform
+ * uniform mutation, but this could be expanded to allow for other types as well.
+ */
+void Individual::mutate() {
 	int m;
 	for (int i = 0; i < genomeLength; i++) {
-		if (mutateType == 0) {  // 0 - uniform, may have different kind of mutation later
+		// 0 - uniform, may have different kind of mutation later
+		if (mutateType == 0) {  
 			m = (rand() % uniformMutateRange - (uniformMutateRange / 2));
 			genome[i] += m;
 		}

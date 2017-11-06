@@ -1,7 +1,20 @@
+/**
+ * This file contains the implementations of the functions stubbed out in
+ * util.h.
+ * 
+ * @author trevmo
+ */
+
 #include "stdafx.h"
 #include "util.h"
 #include "params.h"
 
+/**
+ * Return a random amount of damage from a uniform distribution.
+ * @param mean middle of the range of damage
+ * @param range amount of variance on either side of the mean
+ * @return random value within [mean-range, mean+range]
+ */
 double uniformDistDamage(double mean, double range)
 {
 	return mean - range + (rand() % (int)(2 * range + 1));
@@ -39,8 +52,12 @@ double gaussianDamage(double mean, double stdDev) {
 	z1 = sqrt(-2.0 * log(u1)) * sin(twoPi * u2);
 	return z0 * stdDev + mean;
 }
-
-// prints information about the run into the data header
+/**
+ * Print out info related to the current run of the GA. Use these values
+ * for reproducibility of the experiments.
+ * @param fs filestream to send the output to
+ * @param t time that the experiment was started at
+ */
 void printHeader(ofstream &fs, time_t t) {
 	struct tm * timeinfo;
 	timeinfo = localtime(&t);
@@ -54,9 +71,15 @@ void printHeader(ofstream &fs, time_t t) {
 	fs << "Mutation size: " << uniformMutateRange << endl;
 	fs << "Pop size: " << popSize << endl;
 	fs << "Tournament size: " << tournSize << endl;
-
 }
-
+/**
+ * Form a filename based off of the time the experiment was started at,
+ * the attack type used, and the range of damage used.
+ * @param theTime initial time of the experiment (used to seed rand())
+ * @param type attack type (see params.h)
+ * @param range of damage
+ * @return filename
+ */
 string formFileName(time_t *theTime, int type, int range)
 {
 	time(theTime);
