@@ -1,5 +1,10 @@
-// hp_analysis.cpp : Defines the entry point for the console application.
-//
+/**
+ * This serves as the main file of the project. It controls the execution
+ * of the GA for testing and data collection purposes.
+ *
+ * @author tsoule
+ * @author trevmo
+ */
 
 #include "stdafx.h"
 #include<cstdio>
@@ -8,6 +13,8 @@
 #include<cmath>
 #include<random>
 #include <string>
+#include <chrono>
+#include <thread>
 #include"indiv.h"
 #include"pop.h"
 #include "util.h"
@@ -25,17 +32,21 @@ int main() {
 		attackType = type;
 		//range of damage for uniform; std dev for Gaussian
 		for (int range = 1; range < 6; range++) {
-			filename = formFileName(&theTime, type, range);
-			rangeDamage = range;
-			pop p;
-			p.openCsv(filename, theTime);
-			p.printToCsv(0);
-			//100 generations each
-			for (int g = 0; g < 100; g++) {
-				p.nextGen();
-				p.printToCsv(g+1);
+			//run the GA 5 times per combo
+			for (int iter = 0; iter < 5; iter++) {
+				filename = formFileName(&theTime, type, range);
+				rangeDamage = range;
+				Population p;
+				p.openCsv(filename, theTime);
+				p.printToCsv(0);
+				//100 generations each
+				for (int g = 0; g < 100; g++) {
+					p.nextGen();
+					p.printToCsv(g + 1);
+				}
+				p.closeCsv();
+				this_thread::sleep_for(chrono::milliseconds(1000));
 			}
-			p.closeCsv();
 		}
 	}	
 	return 0;
