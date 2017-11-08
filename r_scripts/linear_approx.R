@@ -1,9 +1,16 @@
+#!/usr/bin/env Rscript
 require(ggplot2)
-x <- seq(0, 100, by=1)
-y <- c(1, 0.88, 0.97, 0.88, 0.89, 0.95, 1, 0.97, 1.17, 1.28, 1.65, 1.64, 1.79, 1.86, 1.84, 1.83, 1.85, 1.87, 1.92, 1.86, 1.84, 1.92, 1.83, 1.8, 1.85, 1.87, 1.87, 1.87, 1.92, 1.92, 1.9, 1.87, 1.86, 1.88, 1.91, 1.88, 1.91, 1.91, 1.91, 1.97, 1.97, 2, 2.1, 2.24, 2.47, 2.73, 2.8, 2.78, 2.89, 2.83, 2.86, 2.86, 2.86, 2.88, 2.93, 2.98, 3.03, 3.03, 3.21, 3.4, 3.63, 3.78, 3.89, 3.83, 3.85, 3.9, 3.86, 3.87, 3.86, 3.81, 3.91, 3.96, 4.06, 4.16, 4.32, 4.5, 4.66, 4.68, 4.69, 4.79, 4.81, 4.74, 4.88, 4.86, 4.88, 4.9, 4.94, 4.95, 4.97, 5.01, 5.08, 5.12, 5.3, 5.43, 5.64, 5.72, 5.78, 5.87, 5.87, 5.76, 5.84)
-plot(x,y)
-res <- lm(y ~ x)
+args = commandArgs(trailingOnly=TRUE)
+if (length(args) != 1) {
+  stop("You must specify a csv file on the command line.n")
+}
+dat <- read.csv(args[1], skip = 10)
+gen <- dat$Generation
+avg <- dat$AvgFit
+best <- dat$BestFit
+#plot(x,y)
+res <- lm(avg ~ gen)
 r2 <- summary(res)$r.squared
-slope <- res$coefficients['x']
+slope <- res$coefficients['gen']
 print(paste("slope:", slope))
 print(paste("r^2:", r2))
