@@ -1,7 +1,17 @@
 #!/usr/bin/env Rscript
 require(ggplot2)
 
-findLinearApprox <- function (xvals, yvals, slopeLabel, r2Label) {
+FindLinearApprox <- function (xvals, yvals, slopeLabel, r2Label) {
+  # Calculates the linear approximation and retrieves the corresponding
+  # slope and R^2 values.
+  #
+  # Args:
+  #   xvals: vector of data comprising the x axis
+  #   yvals: vector of data comprising the y axis
+  #   slopeLabel: label for slope col of the table of results
+  #   r2Label: label for r^2 col of the table of results
+  # Returns:
+  #   table containing the slope and R^2 values
   model <- lm (yvals ~ xvals)
   r2 <- summary(model)$r.squared
   slope <- model$coefficients['xvals']
@@ -11,7 +21,14 @@ findLinearApprox <- function (xvals, yvals, slopeLabel, r2Label) {
   final <- as.table(final)
   return(final)
 }
-findResults <- function(filename) {
+FindResults <- function(filename) {
+  # Find the results from the data in the specified csv file.
+  #
+  # Arg:
+  #   filename: name of the csv file
+  #
+  # Returns:
+  #   void (outputs results to a new file)
   output <- paste("out", filename, sep="_")
   header <- read.csv(args[1], nrows=9)
   write.csv(header, file = output, row.names = FALSE)
@@ -20,8 +37,8 @@ findResults <- function(filename) {
   avg <- dat$AvgFit
   best <- dat$BestFit
   #plot(x,y)
-  avgFinal <- findLinearApprox(gen, avg, 'avgSlope', 'r^2')
-  bestFinal <-findLinearApprox(gen, best, 'bestSlope', 'r^2')
+  avgFinal <- FindLinearApprox(gen, avg, 'avgSlope', 'r^2')
+  bestFinal <- FindLinearApprox(gen, best, 'bestSlope', 'r^2')
   #write the table out to the file created earlier
   write.table(avgFinal, output, sep = ",", col.names = T, row.names = F, append = T)
   write.table(bestFinal, output, sep = ",", col.names = T, row.names = F, append = T)
@@ -31,4 +48,4 @@ args = commandArgs(trailingOnly=TRUE)
 if (length(args) != 1) {
   stop("You must specify a csv file on the command line.n")
 }
-findResults(args[1])
+FindResults(args[1])
