@@ -9,24 +9,20 @@
 
 require(ggplot2)
 
-FindLinearApprox <- function (xvals, yvals, slopeLabel, r2Label) {
+FindLinearApprox <- function (xvals, yvals) {
   # Calculates the linear approximation and retrieves the corresponding
   # slope and R^2 values.
   #
   # Args:
   #   xvals: vector of data comprising the x axis
   #   yvals: vector of data comprising the y axis
-  #   slopeLabel: label for slope col of the table of results
-  #   r2Label: label for r^2 col of the table of results
   # Returns:
-  #   table containing the slope and R^2 values
+  #   vector containing the slope and R^2 values
+  
   model <- lm (yvals ~ xvals)
   r2 <- summary(model)$r.squared
   slope <- model$coefficients['xvals']
-  #form a table with those values and labels
-  final <- matrix(c(slope, r2), ncol = 2, byrow = TRUE)
-  colnames(final) <- c(slopeLabel, r2Label)
-  final <- as.table(final)
+  final <- c(slope, r2)
   return(final)
 }
 FindResults <- function(filename) {
@@ -41,6 +37,7 @@ FindResults <- function(filename) {
   dir.create(dirName, showWarnings = F)
   output <- paste("stats", basename(filename), sep="_")
   outputPath <- file.path(dirName, output)
+  
   header <- read.csv(filename, nrows=9)
   write.csv(header, outputPath, row.names = FALSE)
   dat <- read.csv(filename, skip = 10)
@@ -48,11 +45,15 @@ FindResults <- function(filename) {
   avg <- dat$AvgFit
   best <- dat$BestFit
   #plot(x,y)
-  avgFinal <- FindLinearApprox(gen, avg, 'avgSlope', 'r^2')
-  bestFinal <- FindLinearApprox(gen, best, 'bestSlope', 'r^2')
+  avgFinal <- FindLinearApprox(gen, avg)
+  bestFinal <- FindLinearApprox(gen, best)
+  
+  table <- matrix(c(avgFinal, bestFinal), ncol = 2, byrow = T)
+  colnames(table) <- c("slope", "r2")
+  rownames(table) <- c("avg", "best")
+  table <- as.table(table)
   #write the table out to the file created earlier
-  write.table(avgFinal, outputPath, sep = ",", col.names = T, row.names = F, append = T)
-  write.table(bestFinal, outputPath, sep = ",", col.names = T, row.names = F, append = T)
+  write.table(table, outputPath, sep = ",", col.names = T, row.names = T, append = T)
 }
 
 args = commandArgs(trailingOnly=TRUE)
