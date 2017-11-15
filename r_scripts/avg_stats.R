@@ -68,7 +68,7 @@ args = commandArgs(trailingOnly=TRUE)
 if (length(args) < 1) {
   stop("You must specify csv file(s) on the command line.n")
 }
-batchedFiles <- BatchFiles(args, 5)
+batchedFiles <- BatchFiles(args, 20)
 dirName <- "avgs"
 dir.create(dirName, showWarnings = F)
 for (col in 1:ncol(batchedFiles)) {
