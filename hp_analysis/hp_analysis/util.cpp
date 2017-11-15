@@ -73,25 +73,32 @@ void printHeader(ofstream &fs, time_t t) {
 	fs << "Tournament size: " << tournSize << endl;
 }
 /**
- * Form a filename based off of the time the experiment was started at,
+ * Form a filename based off of the iteration of the GA,
  * the attack type used, and the range of damage used.
- * @param theTime initial time of the experiment (used to seed rand())
+ * @param iteration current iteration of the GA
  * @param type attack type (see params.h)
  * @param range of damage
  * @return filename
  */
-string formFileName(time_t *theTime, int type, int range)
+string formFileName(int iteration, int type, int range)
 {
-	time(theTime);
-	srand(*theTime);
-	struct tm * timeinfo;
-	timeinfo = localtime(theTime);
-	string randTime = "";
-	randTime += to_string(timeinfo->tm_year);
-	randTime += to_string(timeinfo->tm_mon);
-	randTime += to_string(timeinfo->tm_mday);
-	randTime += to_string(timeinfo->tm_hour);
-	randTime += to_string(timeinfo->tm_min);
-	randTime += to_string(timeinfo->tm_sec);
-	return to_string(type) + "_" + to_string(range) + "_" + randTime + ".csv";
+	string filename = "";
+	switch (type)
+	{
+	case 0:
+		filename += "constant";
+		break;
+	case 1:
+		filename += "uniform";
+		break;
+	case 2:
+		filename += "gaussian";
+		break;
+	}
+	filename += "_";
+	filename += to_string(range);
+	filename += "_";
+	filename += to_string(iteration);
+	filename += ".csv";
+	return filename;
 }

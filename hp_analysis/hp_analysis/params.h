@@ -3,6 +3,7 @@
 /**
 * This file contains global variables used for controlling aspects of the project.
 *
+* @author tsoule
 * @author trevmo
 */
 
