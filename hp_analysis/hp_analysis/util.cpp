@@ -65,6 +65,9 @@ void printHeader(ofstream &fs, time_t t) {
 	fs << asctime(timeinfo);
 	fs << "Attack type: " << attackType << endl;
 	fs << "Fixed damage amount: " << damageAmount << endl;
+	fs << "Max init health: " << maxInitHealth << endl;
+	if (genomeLength > 1)
+		fs << "Max init armor: " << maxInitArmor << endl;
 	fs << "Mean damage: " << meanDamage << endl;
 	fs << "Range of damamge (+/- this amount): " << rangeDamage << endl;
 	fs << "Mutation type: " << mutateType << endl;
