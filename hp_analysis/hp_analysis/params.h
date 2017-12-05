@@ -9,10 +9,12 @@
 
 // currently two genes - health and armor
 const int genomeLength = 2;
-// maximum initial health
-const int maxInitHealth = 10;
-// maximum initial armor
-const int maxInitArmor = 5;
+// maximum initial health and armor
+const int maxInitGeneVal = 10;
+// amount to scale armor by (i.e. armor *= val)
+const int armorScale = 0.1;
+// fitness value for individual with impenetrable armor (for the given damage)
+const int highFitness = 1000;
 // 0 - uniform
 const int mutateType = 0;
 // -5 to 5

@@ -17,13 +17,8 @@
 Individual::Individual() {
 	for (int i = 0; i < genomeLength; i++) {
 		//genome[0] is the individual's health value
-		if (i == 0)
-			// initial health is between 1 and the max initial health
-			genome[i] = 1 + rand() % maxInitHealth;
-		//genome[1] is the individual's armor
-		else if (i == 1)
-			// initial armor is between 1 and the max initial armor
-			genome[i] = 1 + rand() % maxInitArmor;
+		//genome[1] is the individual's armor value
+		genome[i] = 1 + rand() % maxInitGeneVal;
 	}
 }
 /**
@@ -72,7 +67,7 @@ void Individual::calcFit() {
 void Individual::calcFit(double(*calcDamage)(double, double))
 {
 	float health = genome[0];
-	float armor = (genomeLength > 1 ? genome[1] : 0);
+	float armor = (genomeLength > 1 ? genome[1] * armorScale : 0);
 	float damage;
 	fitness = 0;
 	while (health > 0) {
@@ -82,11 +77,18 @@ void Individual::calcFit(double(*calcDamage)(double, double))
 		//if there is armor in play, subtract that value from the damage
 		//and then apply the damage to the health
 		damage -= armor;
-		//TODO: determine fitness to assign when the armor is greater than the damage
-		if (damage > 0)
+		if (damage > 0) {
+			//if the armor has not completely eliminated the damage
+			//then count the number of hits the individual can take
 			health -= damage;
-		// one fitness per hit
-		fitness++;
+			// one fitness per hit
+			fitness++;
+		} else {
+			//if the armor completely blocks the damage, then set
+			//the fitness to a high value
+			fitness = highFitness;
+			break;
+		}
 	}
 }
 /**
@@ -106,8 +108,7 @@ void Individual::mutate() {
 	int m;
 	for (int i = 0; i < genomeLength; i++) {
 		// 0 - uniform, may have different kind of mutation later
-		if (mutateType == 0) {  
-			//TODO: determine how to adjust mutation for armor genome
+		if (mutateType == 0) {
 			m = (rand() % uniformMutateRange - (uniformMutateRange / 2));
 			genome[i] += m;
 		}
