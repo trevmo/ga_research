@@ -18,8 +18,8 @@ FormPlot <- function(x, y1, y2, y1lab, y2lab, xaxis, yaxis, title) {
   #   title: title label for the graph
   
   colors = rainbow(2, alpha = 1, start = 0, end = 4/6)
-  plot(x, y1, col = colors[1], xlab = xaxis, ylab = yaxis, main = title, pch = 19)
-  legend("bottomright", c(y1lab, y2lab), fill = colors)
+  plot(x, y1, col = colors[1], xlim=c(0,15), ylim=c(0.03,0.12), xlab = xaxis, ylab = yaxis, main = title, pch = 19)
+  legend("topleft", c(y1lab, y2lab), fill = colors)
   points(x, y2, col = colors[2], pch = 15)
 }
 PlotResults <- function(batch, setLabel1, setLabel2) {
@@ -42,15 +42,15 @@ PlotResults <- function(batch, setLabel1, setLabel2) {
     #TODO: generalize function
     if (grepl(setLabel1, file)) {
       #insert into that set
-      set1Avg <- c(set1Avg, dat$avgSlope)
-      set1Best <- c(set1Best, dat$bestSlope)
+      set1Avg <- append(set1Avg, dat$avgSlope)
+      set1Best <- append(set1Best, dat$bestSlope)
     } else {
       #insert into the other set
-      set2Avg <- c(set2Avg, dat$avgSlope)
-      set2Best <- c(set2Best, dat$bestSlope)
+      set2Avg <- append(set2Avg, dat$avgSlope)
+      set2Best <- append(set2Best, dat$bestSlope)
     }
   }
-  range <- seq(1, length(set1Avg))
+  range <- seq(0, length(set1Avg)-1)
   FormPlot(range, 
            set1Avg, 
            set2Avg, 

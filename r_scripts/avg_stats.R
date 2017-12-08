@@ -40,7 +40,7 @@ FindAvgs <- function(batch, outputDir) {
   bestSlopeVals <- c()
   bestR2Vals <- c()
   for (file in batch) {
-    dat <- read.csv(file, skip = 10)
+    dat <- read.csv(file, skip = 11)
     
     avgSlopeVals <- c(avgSlopeVals, dat$slope[[1]][[1]])
     avgR2Vals <- c(avgR2Vals, dat$r2[[1]][[1]])
@@ -52,7 +52,11 @@ FindAvgs <- function(batch, outputDir) {
   #the first file in the batch
   outputFile <- basename(batch[[1]])
   str <- strsplit(outputFile, "[_ ]+")
-  outputFile <- paste("avgs_", str[[1]][2], "_", str[[1]][3], ".csv", sep = '')
+  if (nchar(str[[1]][3]) == 1)
+    suffix <- paste("0", str[[1]][3], sep = '')
+  else
+    suffix <- str[[1]][3]
+  outputFile <- paste("avgs_", str[[1]][2], "_", suffix, ".csv", sep = '')
   outputPath <- file.path(outputDir, outputFile)
   
   #form a table from the results and output to the new file

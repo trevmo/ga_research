@@ -38,9 +38,9 @@ FindResults <- function(filename) {
   output <- paste("stats", basename(filename), sep="_")
   outputPath <- file.path(dirName, output)
   
-  header <- read.csv(filename, nrows=9)
+  header <- read.csv(filename, nrows=10)
   write.csv(header, outputPath, row.names = FALSE)
-  dat <- read.csv(filename, skip = 10)
+  dat <- read.csv(filename, skip = 11)
   gen <- dat$Generation
   avg <- dat$AvgFit
   best <- dat$BestFit
