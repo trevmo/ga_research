@@ -92,11 +92,6 @@ void Individual::calcFit(double(*calcDamage)(double, double))
 			health -= damage;
 			// one fitness per hit
 			fitness++;
-		} else {
-			//if the armor completely blocks the damage, then set
-			//the fitness to a high value
-			fitness = HIGH_FITNESS;
-			break;
 		}
 	}
 }
