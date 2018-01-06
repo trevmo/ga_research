@@ -13,13 +13,18 @@ using namespace std;
 * @author tsoule
 * @author trevmo
 */
+
+const int POP_SIZE = 100;
+
 class Population {
 private:
-	Individual individuals[popSize];
+	Individual individuals[POP_SIZE];
 	int best;   // index of the most fit indivdual
 	float bestFit;   // fitness of the most fit individual
 	float avgFit;    // average fitness of the population
 	float avgGenes[genomeLength];   // average value of each gene 
+
+	const int TOURN_SIZE = 3;
 
 	ofstream *csv;
 public:

@@ -9,10 +9,15 @@
  * @author tsoule
  * @author trevmo
  */
+
 class Individual {
 private:
 	int genome[genomeLength];
 	double fitness;
+
+	const int MAX_INIT_VAL = 10;
+	const double ARMOR_SCALE = 0.1;
+	const int HIGH_FITNESS = 1000;
 
 	void calcFit(double(*calcDamage)(double, double));
 public:

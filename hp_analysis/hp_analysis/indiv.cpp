@@ -18,7 +18,7 @@ Individual::Individual() {
 	for (int i = 0; i < genomeLength; i++) {
 		//genome[0] is the individual's health value
 		//genome[1] is the individual's armor value
-		genome[i] = 1 + rand() % maxInitGeneVal;
+		genome[i] = 1 + rand() % MAX_INIT_VAL;
 	}
 }
 /**
@@ -38,12 +38,12 @@ void Individual::copy(Individual source) {
  * a particular attack.
  */
 void Individual::calcFit() {
-	switch (attackType)
+	switch (DAMAGE.type)
 	{
 	case 0:
 		//attackType == 0 means fixed damage, so take the ceiling of 
 		//the number of time health is divisable by damage
-		fitness = ceil((double)genome[0] / (double)damageAmount);
+		fitness = ceil((double)genome[0] / (double) DAMAGE.mean);
 		break;
 	case 1:
 		//attackType == 1 means uniformly distributed random damage,
@@ -67,20 +67,20 @@ void Individual::calcFit() {
 void Individual::calcFit(double(*calcDamage)(double, double))
 {
 	float health = genome[0];
-	float armor = (genomeLength > 1 ? genome[1] * armorScale : 0);
+	float armor = (genomeLength > 1 ? genome[1] * ARMOR_SCALE : 0);
 	//if using a Gaussian attack type, and the armor is greater than two
 	//std. dev. from the mean damage, treat the individual as having
 	//impenetrable armor
-	if (attackType == 2 &&
-		armor > ((2 * rangeDamage) + meanDamage))
+	if (DAMAGE.type == 2 &&
+		armor > ((2 * DAMAGE.range) + DAMAGE.mean))
 	{
-		fitness = highFitness;
+		fitness = HIGH_FITNESS;
 		return;
 	}
 	float damage;
 	fitness = 0;
 	while (health > 0) {
-		damage = calcDamage(meanDamage, rangeDamage);
+		damage = calcDamage(DAMAGE.mean, DAMAGE.range);
 		//on the off chance it is negative, flip the sign
 		damage = (damage < 0 ? -1 * damage : damage);
 		//if there is armor in play, subtract that value from the damage
@@ -95,7 +95,7 @@ void Individual::calcFit(double(*calcDamage)(double, double))
 		} else {
 			//if the armor completely blocks the damage, then set
 			//the fitness to a high value
-			fitness = highFitness;
+			fitness = HIGH_FITNESS;
 			break;
 		}
 	}
@@ -117,8 +117,8 @@ void Individual::mutate() {
 	int m;
 	for (int i = 0; i < genomeLength; i++) {
 		// 0 - uniform, may have different kind of mutation later
-		if (mutateType == 0) {
-			m = (rand() % uniformMutateRange - (uniformMutateRange / 2));
+		if (MUTATE.type == 0) {
+			m = (rand() % MUTATE.range - (MUTATE.range / 2));
 			genome[i] += m;
 		}
 	}

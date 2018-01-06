@@ -63,15 +63,16 @@ void printHeader(ofstream &fs, time_t t) {
 	timeinfo = localtime(&t);
 	fs << "Seed " << t << endl;
 	fs << asctime(timeinfo);
-	fs << "Attack type: " << attackType << endl;
-	fs << "Fixed damage amount: " << damageAmount << endl;
-	fs << "Max init gene value: " << maxInitGeneVal << endl;
-	fs << "Mean damage: " << meanDamage << endl;
-	fs << "Range of damamge (+/- this amount): " << rangeDamage << endl;
-	fs << "Mutation type: " << mutateType << endl;
-	fs << "Mutation size: " << uniformMutateRange << endl;
-	fs << "Pop size: " << popSize << endl;
-	fs << "Tournament size: " << tournSize << endl;
+	fs << "Attack type: " << DAMAGE.type << endl;
+	fs << "Fixed damage amount: " << DAMAGE.mean << endl;
+	//TODO: adapt helper method with rework of constant vals inside of classes
+	//fs << "Max init gene value: " << maxInitGeneVal << endl;
+	fs << "Mean damage: " << DAMAGE.mean << endl;
+	fs << "Range of damamge (+/- this amount): " << DAMAGE.range << endl;
+	fs << "Mutation type: " << MUTATE.type << endl;
+	fs << "Mutation size: " << MUTATE.range << endl;
+	//fs << "Pop size: " << popSize << endl;
+	//fs << "Tournament size: " << tournSize << endl;
 }
 /**
  * Form a filename based off of the iteration of the GA,

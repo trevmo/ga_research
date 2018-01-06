@@ -42,7 +42,7 @@ void GeneticAlgorithm::run(int iteration, int generations)
 	time_t theTime;
 	time(&theTime);
 	srand(theTime);
-	rangeDamage = range;
+	DAMAGE.range = range;
 	population->openCsv(formFileName(iteration, attackType, range), theTime);
 	population->printToCsv(0);
 	for (int g = 0; g < generations; g++) {
@@ -52,14 +52,3 @@ void GeneticAlgorithm::run(int iteration, int generations)
 	population->closeCsv();
 	this_thread::sleep_for(chrono::milliseconds(delay));
 }
-
-void GeneticAlgorithm::setAttackType(int type)
-{
-	this->attackType = type;
-}
-
-void GeneticAlgorithm::setRange(int range)
-{
-	this->range = range;
-}
-

@@ -22,11 +22,8 @@ Population::Population() {
  * the population.
  */
 void Population::print() {
-	for (int i = 0; i < popSize; i++) {
+	for (int i = 0; i < POP_SIZE; i++)
 		individuals[i].calcFit();
-		//printf("%d ",i);
-		//the_pop[i].print();
-	}
 	calcAvgs();
 	printf("Average Fitness: %f Best Fitness: %f  Best Individual %d genes:", avgFit, bestFit, best);
 	for (int g = 0; g < genomeLength; g++) {
@@ -57,7 +54,7 @@ void Population::openCsv(string filename, time_t time)
  */
 void Population::printToCsv(int generation) {
 	if (csv->is_open()) {
-		for (int i = 0; i < popSize; i++)
+		for (int i = 0; i < POP_SIZE; i++)
 			individuals[i].calcFit();
 		calcAvgs();
 		*csv << generation << "," << avgFit << "," << bestFit << endl;
@@ -79,21 +76,21 @@ void Population::calcAvgs() {
 	best = 0;
 	bestFit = individuals[0].getFit();
 	avgFit = individuals[0].getFit();
-	for (int i = 1; i < popSize; i++) {
+	for (int i = 1; i < POP_SIZE; i++) {
 		avgFit += individuals[i].getFit();
 		if (individuals[i].getFit() > bestFit) {
 			best = i;
 			bestFit = individuals[i].getFit();
 		}
 	}
-	avgFit /= popSize;
+	avgFit /= POP_SIZE;
 
 	for (int g = 0; g < genomeLength; g++) {
 		avgGenes[g] = 0;
-		for (int i = 1; i < popSize; i++) {
+		for (int i = 1; i < POP_SIZE; i++) {
 			avgGenes[g] += individuals[i].getGene(g);
 		}
-		avgGenes[g] /= popSize;
+		avgGenes[g] /= POP_SIZE;
 	}
 }
 /**
@@ -101,22 +98,21 @@ void Population::calcAvgs() {
  * Also, include two copies of the best fitness for elitism.
  */
 void Population::nextGen() {
-	Individual temp[popSize];
+	Individual temp[POP_SIZE];
 	// elitism, make two copies of the best individual
 	temp[0].copy(individuals[best]);  
 	temp[1].copy(individuals[best]);
 	int p1, p2;
-	for (int i = 2; i < popSize; i += 2) {
+	for (int i = 2; i < POP_SIZE; i += 2) {
 		p1 = selectParent();
 		p2 = selectParent();
 		temp[i].copy(individuals[p1]);
 		temp[i + 1].copy(individuals[p2]);
-		// no crossover, because there's only one gene
-		//temp[i].crossover(temp[i+1]);   
+		//no crossover currently
 		temp[i].mutate();
 		temp[i + 1].mutate();
 	}
-	for (int i = 0; i < popSize; i++) {
+	for (int i = 0; i < POP_SIZE; i++) {
 		individuals[i].copy(temp[i]);
 	}
 }
@@ -128,10 +124,10 @@ void Population::nextGen() {
 int Population::selectParent() {
 	int best, temp;
 	int bestFit;
-	best = rand() % popSize;
+	best = rand() % POP_SIZE;
 	bestFit = individuals[best].getFit();
-	for (int i = 1; i < tournSize; i++) {
-		temp = rand() % popSize;
+	for (int i = 1; i < TOURN_SIZE; i++) {
+		temp = rand() % POP_SIZE;
 		if (individuals[temp].getFit() > bestFit) {
 			best = temp;
 			bestFit = individuals[best].getFit();
