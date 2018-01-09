@@ -6,7 +6,7 @@
 */
 
 #include "stdafx.h"
-#include "pop.h"
+#include "Population.h"
 #include "util.h"
 #include <iostream>
 

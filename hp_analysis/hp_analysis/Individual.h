@@ -1,5 +1,5 @@
 #pragma once
-#include"params.h"  // contains general parameters of the GA
+#include "params.h"  // contains general parameters of the GA
 
 /**
  * This class defines the data members and methods for an Individual.

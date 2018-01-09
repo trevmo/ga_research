@@ -1,5 +1,5 @@
 #pragma once
-#include "indiv.h"
+#include "Individual.h"
 #include <string>
 #include <iostream>
 #include <fstream>

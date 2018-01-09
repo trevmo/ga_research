@@ -6,7 +6,7 @@
  */
 
 #include "stdafx.h"
-#include "indiv.h"
+#include "Individual.h"
 #include "util.h"
 #include <cstdlib>
 

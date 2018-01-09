@@ -1,5 +1,5 @@
 #pragma once
-#include "pop.h"
+#include "Population.h"
 
 /**
 * This class defines a genetic algorithm for testing the affects of different
