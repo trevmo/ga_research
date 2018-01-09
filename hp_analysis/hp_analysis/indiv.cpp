@@ -11,15 +11,39 @@
 #include <cstdlib>
 
 /**
- * Base constructor for the Individual class. Initializes an 
- * individual with a random genome.
+ * Base constructor for the Individual class.
  */
 Individual::Individual() {
+	genome = NULL;
+}
+/**
+ * Parameterized constructor for the Individual class. Initializes an 
+ * individual with a random genome.
+ */
+Individual::Individual(int genomeLength) {
+	this->genomeLength = genomeLength;
+	genome = new int[genomeLength];
 	for (int i = 0; i < genomeLength; i++) {
-		//genome[0] is the individual's health value
-		//genome[1] is the individual's armor value
 		genome[i] = 1 + rand() % MAX_INIT_VAL;
 	}
+}
+/**
+ * Deconstruct an individual.
+ */
+Individual::~Individual() {
+	delete[] genome;
+}
+/**
+ * Make a copy of the current object and return the reference
+ * to the new Individual.
+ * @return pointer to a new Individual object
+ */
+Individual* Individual::copy() {
+	Individual *newInd = new Individual(genomeLength);
+	for (int i = 0; i < genomeLength; i++)
+		newInd->genome[i] = this->genome[i];
+	newInd->fitness = this->fitness;
+	return newInd;
 }
 /**
  * Make a copy of an individual.

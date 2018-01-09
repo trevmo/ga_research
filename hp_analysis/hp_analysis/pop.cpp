@@ -11,11 +11,23 @@
 #include <iostream>
 
 /**
- * Base constructor for the population. Calculates the overal statistics
+ * Base constructor for the population. Calculates the overall statistics
  * based off the array of randomly initialized individuals.
  */
 Population::Population() {
+	//initialize an array of individuals with NULL genomes
+	individuals = new Individual *[POP_SIZE];
+	for (int i = 0; i < POP_SIZE; i++)
+		//initialize each individual in the array with a random genome
+		individuals[i] = new Individual(GENOME_LENGTH);
+	
 	calcAvgs();
+}
+/**
+ * Deconstruct the population.
+ */
+Population::~Population() {
+	delete[] individuals;
 }
 /**
  * Re-calculate the fitness of the individuals and print out the stats of
@@ -23,10 +35,10 @@ Population::Population() {
  */
 void Population::print() {
 	for (int i = 0; i < POP_SIZE; i++)
-		individuals[i].calcFit();
+		individuals[i]->calcFit();
 	calcAvgs();
 	printf("Average Fitness: %f Best Fitness: %f  Best Individual %d genes:", avgFit, bestFit, best);
-	for (int g = 0; g < genomeLength; g++) {
+	for (int g = 0; g < GENOME_LENGTH; g++) {
 		printf(" %.3f", avgGenes[g]);
 	}
 	printf("\n");
@@ -55,7 +67,7 @@ void Population::openCsv(string filename, time_t time)
 void Population::printToCsv(int generation) {
 	if (csv->is_open()) {
 		for (int i = 0; i < POP_SIZE; i++)
-			individuals[i].calcFit();
+			individuals[i]->calcFit();
 		calcAvgs();
 		*csv << generation << "," << avgFit << "," << bestFit << endl;
 	}
@@ -74,21 +86,21 @@ void Population::closeCsv()
  */
 void Population::calcAvgs() {
 	best = 0;
-	bestFit = individuals[0].getFit();
-	avgFit = individuals[0].getFit();
+	bestFit = individuals[0]->getFit();
+	avgFit = individuals[0]->getFit();
 	for (int i = 1; i < POP_SIZE; i++) {
-		avgFit += individuals[i].getFit();
-		if (individuals[i].getFit() > bestFit) {
+		avgFit += individuals[i]->getFit();
+		if (individuals[i]->getFit() > bestFit) {
 			best = i;
-			bestFit = individuals[i].getFit();
+			bestFit = individuals[i]->getFit();
 		}
 	}
 	avgFit /= POP_SIZE;
 
-	for (int g = 0; g < genomeLength; g++) {
+	for (int g = 0; g < GENOME_LENGTH; g++) {
 		avgGenes[g] = 0;
 		for (int i = 1; i < POP_SIZE; i++) {
-			avgGenes[g] += individuals[i].getGene(g);
+			avgGenes[g] += individuals[i]->getGene(g);
 		}
 		avgGenes[g] /= POP_SIZE;
 	}
@@ -98,23 +110,22 @@ void Population::calcAvgs() {
  * Also, include two copies of the best fitness for elitism.
  */
 void Population::nextGen() {
-	Individual temp[POP_SIZE];
-	// elitism, make two copies of the best individual
-	temp[0].copy(individuals[best]);  
-	temp[1].copy(individuals[best]);
-	int p1, p2;
+	Individual **tmp = new Individual *[POP_SIZE];
+	tmp[0] = individuals[best]->copy();
+	tmp[1] = individuals[best]->copy();
+	int parent1;
+	int parent2;
 	for (int i = 2; i < POP_SIZE; i += 2) {
-		p1 = selectParent();
-		p2 = selectParent();
-		temp[i].copy(individuals[p1]);
-		temp[i + 1].copy(individuals[p2]);
-		//no crossover currently
-		temp[i].mutate();
-		temp[i + 1].mutate();
+		parent1 = selectParent();
+		parent2 = selectParent();
+		tmp[i] = individuals[parent1]->copy();
+		tmp[i + 1] = individuals[parent2]->copy();
+		// no crossover currently
+		tmp[i]->mutate();
+		tmp[i + 1]->mutate();
 	}
-	for (int i = 0; i < POP_SIZE; i++) {
-		individuals[i].copy(temp[i]);
-	}
+	for (int j = 0; j < POP_SIZE; j++)
+		individuals[j] = tmp[j]->copy();
 }
 /**
  * Perform tournament-style selection to find parents for the
@@ -125,12 +136,12 @@ int Population::selectParent() {
 	int best, temp;
 	int bestFit;
 	best = rand() % POP_SIZE;
-	bestFit = individuals[best].getFit();
+	bestFit = individuals[best]->getFit();
 	for (int i = 1; i < TOURN_SIZE; i++) {
 		temp = rand() % POP_SIZE;
-		if (individuals[temp].getFit() > bestFit) {
+		if (individuals[temp]->getFit() > bestFit) {
 			best = temp;
-			bestFit = individuals[best].getFit();
+			bestFit = individuals[best]->getFit();
 		}
 	}
 	return best;

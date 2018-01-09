@@ -7,9 +7,6 @@
 * @author trevmo
 */
 
-// currently two genes - health and armor
-const int genomeLength = 2;
-
 struct Damage {
 	int type;
 	double mean;

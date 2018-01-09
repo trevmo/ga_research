@@ -12,8 +12,9 @@
 
 class Individual {
 private:
-	int genome[genomeLength];
+	int *genome;
 	double fitness;
+	int genomeLength;
 
 	const int MAX_INIT_VAL = 10;
 	const double ARMOR_SCALE = 0.1;
@@ -22,10 +23,13 @@ private:
 	void calcFit(double(*calcDamage)(double, double));
 public:
 	Individual();
+	Individual(int genomeLength);
+	~Individual();
 	void print();
 	void mutate();
 	double getFit() { return fitness; }
 	double getGene(int i) { return genome[i]; }
 	void calcFit();
+	Individual* copy();
 	void copy(Individual);
 };

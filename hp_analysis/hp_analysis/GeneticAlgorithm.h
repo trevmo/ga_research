@@ -18,8 +18,5 @@ public:
 	GeneticAlgorithm(int attackType, int range, int delay);
 	void reset();
 	void run(int iteration, int generations);
-
-	void setAttackType(int type);
-	void setRange(int range);
 };
 

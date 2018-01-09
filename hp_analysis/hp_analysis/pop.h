@@ -15,20 +15,22 @@ using namespace std;
 */
 
 const int POP_SIZE = 100;
+const int GENOME_LENGTH = 2;
 
 class Population {
 private:
-	Individual individuals[POP_SIZE];
+	Individual **individuals;
 	int best;   // index of the most fit indivdual
 	float bestFit;   // fitness of the most fit individual
 	float avgFit;    // average fitness of the population
-	float avgGenes[genomeLength];   // average value of each gene 
+	float avgGenes[GENOME_LENGTH];   // average value of each gene 
 
 	const int TOURN_SIZE = 3;
 
 	ofstream *csv;
 public:
 	Population();
+	~Population();
 	void calcAvgs();
 	void print();
 	void openCsv(string filename, time_t time);
