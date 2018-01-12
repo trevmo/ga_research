@@ -28,6 +28,7 @@ private:
 	const int TOURN_SIZE = 3;
 
 	ofstream *csv;
+	void printCsvHeader(time_t time);
 public:
 	Population();
 	~Population();

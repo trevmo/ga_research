@@ -10,6 +10,9 @@
 #include "util.h"
 #include <cstdlib>
 
+
+const double Individual::ARMOR_SCALE = 0.1;
+
 /**
  * Base constructor for the Individual class.
  */

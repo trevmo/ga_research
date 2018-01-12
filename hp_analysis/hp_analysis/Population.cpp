@@ -50,14 +50,34 @@ void Population::print() {
  * @param filename name of the file (including relative path and .csv extension)
  * @param time time at which the algorithm began
  */
-void Population::openCsv(string filename, time_t time)
-{
+void Population::openCsv(string filename, time_t time) {
 	csv = new ofstream;
 	csv->open(filename.c_str(), fstream::out);
 	if (csv->fail())
 		cout << "fail";
-	printHeader(*csv, time);
+	printCsvHeader(time);
 	*csv << "Generation,AvgFit,BestFit\n";
+}
+/**
+ * Helper method to output the header info for a csv of test data.
+ * @param time start time of test and random seed
+ */
+void Population::printCsvHeader(time_t time) {
+	struct tm * timeinfo;
+	timeinfo = localtime(&time);
+	*csv << "Seed " << time << endl;
+	*csv << asctime(timeinfo);
+	*csv << "Attack type: " << DAMAGE.type << endl;
+	*csv << "Fixed damage amount: " << DAMAGE.mean << endl;
+	*csv << "Max init gene value: " << Individual::MAX_INIT_VAL << endl;
+	*csv << "High fitness value: " << Individual::HIGH_FITNESS << endl;
+	*csv << "Armor scaling: " << Individual::ARMOR_SCALE << endl;
+	*csv << "Mean damage: " << DAMAGE.mean << endl;
+	*csv << "Range of damamge (+/- this amount): " << DAMAGE.range << endl;
+	*csv << "Mutation type: " << MUTATE.type << endl;
+	*csv << "Mutation size: " << MUTATE.range << endl;
+	*csv << "Pop size: " << POP_SIZE << endl;
+	*csv << "Tournament size: " << TOURN_SIZE << endl;
 }
 /**
  * Output the stats of the specified generation of the population to the
@@ -79,7 +99,8 @@ void Population::printToCsv(int generation) {
  */
 void Population::closeCsv()
 {
-	csv->close();
+	if (csv->is_open())
+		csv->close();
 }
 /**
  * Calculate the average fitness and genes of the population.

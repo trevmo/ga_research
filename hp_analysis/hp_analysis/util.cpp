@@ -53,28 +53,6 @@ double gaussianDamage(double mean, double stdDev) {
 	return z0 * stdDev + mean;
 }
 /**
- * Print out info related to the current run of the GA. Use these values
- * for reproducibility of the experiments.
- * @param fs filestream to send the output to
- * @param t time that the experiment was started at
- */
-void printHeader(ofstream &fs, time_t t) {
-	struct tm * timeinfo;
-	timeinfo = localtime(&t);
-	fs << "Seed " << t << endl;
-	fs << asctime(timeinfo);
-	fs << "Attack type: " << DAMAGE.type << endl;
-	fs << "Fixed damage amount: " << DAMAGE.mean << endl;
-	//TODO: adapt helper method with rework of constant vals inside of classes
-	//fs << "Max init gene value: " << maxInitGeneVal << endl;
-	fs << "Mean damage: " << DAMAGE.mean << endl;
-	fs << "Range of damamge (+/- this amount): " << DAMAGE.range << endl;
-	fs << "Mutation type: " << MUTATE.type << endl;
-	fs << "Mutation size: " << MUTATE.range << endl;
-	//fs << "Pop size: " << popSize << endl;
-	//fs << "Tournament size: " << tournSize << endl;
-}
-/**
  * Form a filename based off of the iteration of the GA,
  * the attack type used, and the range of damage used.
  * @param iteration current iteration of the GA

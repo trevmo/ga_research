@@ -19,5 +19,4 @@ using namespace std;
 double uniformDistDamage(double mean, double range);
 double gaussianDamage(double mean, double stdDev);
 
-void printHeader(ofstream &fs, time_t);
 string formFileName(int iteration, int type, int range);

@@ -16,12 +16,12 @@ private:
 	double fitness;
 	int genomeLength;
 
-	const int MAX_INIT_VAL = 10;
-	const double ARMOR_SCALE = 0.1;
-	const int HIGH_FITNESS = 1000;
-
 	void calcFit(double(*calcDamage)(double, double));
 public:
+	static const int MAX_INIT_VAL = 10;
+	static const int HIGH_FITNESS = 1000;
+	static const double ARMOR_SCALE;
+
 	Individual();
 	Individual(int genomeLength);
 	~Individual();
