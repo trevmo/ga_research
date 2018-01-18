@@ -98,8 +98,8 @@ void Individual::calcFit(double(*calcDamage)(double, double))
 	//if using a Gaussian attack type, and the armor is greater than two
 	//std. dev. from the mean damage, treat the individual as having
 	//impenetrable armor
-	if (DAMAGE.type == 2 &&
-		armor > ((2 * DAMAGE.range) + DAMAGE.mean))
+	if ((DAMAGE.type == 1 && exceedsMaxDamage(armor, 1)) ||
+		(DAMAGE.type == 2 && exceedsMaxDamage(armor, 2)))
 	{
 		fitness = HIGH_FITNESS;
 		return;
@@ -117,10 +117,20 @@ void Individual::calcFit(double(*calcDamage)(double, double))
 			//if the armor has not completely eliminated the damage
 			//then count the number of hits the individual can take
 			health -= damage;
-			// one fitness per hit
-			fitness++;
 		}
+		// one fitness per hit
+		fitness++;
 	}
+}
+/**
+ * Check if the given value exceeds the "max" damage based off of the
+ * mean, range, and a given factor.
+ * @param value current armor value
+ * @param factor amount to multiply by the range
+ * @return boolean indicating if it exceeds or not
+ */
+bool Individual::exceedsMaxDamage(float value, int factor) {
+	return (value > ((factor * DAMAGE.range) + DAMAGE.mean));
 }
 /**
  * Print out the genome and fitness of the individual.
