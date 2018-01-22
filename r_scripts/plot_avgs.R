@@ -4,23 +4,27 @@
 #
 # @author trevmo
 
-FormPlot <- function(x, y1, y2, y1lab, y2lab, xaxis, yaxis, title) {
+require(tidyr)
+require(ggplot2)
+
+FormPlot <- function(xvals, y1, y2, y1lab, y2lab, title) {
   # Form a plot with two sets of data in the same range.
   #
   # Args:
-  #   x: vector of x-axis data
+  #   xvals: vector of x-axis data
   #   y1: vector of first set of y-axis data
   #   y2: vector of second set of y-axis data
   #   y1lab: label for the first set of y-axis data
   #   y2lab: label for the second set of y-axis data
-  #   xaxis: label for the units of the x-axis
-  #   yaxis: label for the units of the y-axis
   #   title: title label for the graph
   
-  colors = rainbow(2, alpha = 1, start = 0, end = 4/6)
-  plot(x, y1, col = colors[1], xlim=c(0,15), ylim=c(0.03,0.12), xlab = xaxis, ylab = yaxis, main = title, pch = 19)
-  legend("topleft", c(y1lab, y2lab), fill = colors)
-  points(x, y2, col = colors[2], pch = 15)
+  dat <- cbind.data.frame(xvals, y1, y2)
+  names(dat) <- c("Range", y1lab, y2lab)
+  gath.dat <- gather(dat, value = "Slope", key = "Type", 2:3)
+  png(paste(title, "png", sep = "."), width = 849, height = 535)
+  plot <- ggplot(gath.dat, aes ( x = Range, y = Slope, color = Type)) + geom_point(size = 2)
+  print(plot)
+  dev.off()
 }
 PlotResults <- function(batch, setLabel1, setLabel2) {
   # Pull the data out of the batch of files and form plots.
@@ -54,18 +58,14 @@ PlotResults <- function(batch, setLabel1, setLabel2) {
   FormPlot(range, 
            set1Avg, 
            set2Avg, 
-           paste(setLabel1, " avg"), 
-           paste(setLabel2, " avg"), 
-           "range/std. dev.", 
-           "avg. slope", 
+           paste(setLabel1, "avg", sep = "."), 
+           paste(setLabel2, "avg", sep = "."),
            "Averages of Average Slope")
   FormPlot(range, 
            set1Best, 
            set2Best, 
-           paste(setLabel1, " best"), 
-           paste(setLabel2, " best"),
-           "range/std. dev.", 
-           "avg. slope", 
+           paste(setLabel1, "best", sep = "."), 
+           paste(setLabel2, "best", sep = "."),
            "Averages of Best Slope")
 }
 
