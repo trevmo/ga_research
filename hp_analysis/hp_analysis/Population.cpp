@@ -9,6 +9,9 @@
 #include "Population.h"
 #include "util.h"
 #include <iostream>
+#include <experimental\filesystem>
+
+namespace fs = experimental::filesystem;
 
 /**
  * Base constructor for the population. Calculates the overall statistics
@@ -52,7 +55,15 @@ void Population::print() {
  */
 void Population::openCsv(string filename, time_t time) {
 	csv = new ofstream;
-	csv->open(filename.c_str(), fstream::out);
+	string path = "";
+	if (MUTATE.isVariable) {
+		string dirName = "mutate" + to_string(MUTATE.range);
+		if (!fs::is_directory(fs::status(dirName)))
+			fs::create_directory(dirName);
+		path += dirName;
+	}
+	path += "/" + filename;
+	csv->open(path.c_str(), fstream::out);
 	if (csv->fail())
 		cout << "fail";
 	printCsvHeader(time);

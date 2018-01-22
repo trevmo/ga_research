@@ -17,5 +17,6 @@ extern struct Damage DAMAGE;
 struct Mutate {
 	int type;
 	int range;
+	bool isVariable;
 };
 extern struct Mutate MUTATE;
