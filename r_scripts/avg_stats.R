@@ -40,7 +40,7 @@ FindAvgs <- function(batch, outputDir) {
   bestSlopeVals <- c()
   bestR2Vals <- c()
   for (file in batch) {
-    dat <- read.csv(file, skip = 11)
+    dat <- read.csv(file, skip = 13)
     
     avgSlopeVals <- c(avgSlopeVals, dat$slope[[1]][[1]])
     avgR2Vals <- c(avgR2Vals, dat$r2[[1]][[1]])
