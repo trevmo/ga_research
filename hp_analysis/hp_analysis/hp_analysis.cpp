@@ -18,20 +18,24 @@ struct Mutate MUTATE;
 int main() {
 	int iterations = 20;
 	GeneticAlgorithm *ga = NULL;
-	//use uniform mutation with a constant range for now
+	//use uniform mutation
 	MUTATE.type = 0;
-	MUTATE.range = 6;
+	MUTATE.isVariable = true;
 	//uniform and Gaussian damage
 	DAMAGE.mean = 15;
-	for (int type = 0; type < 3; type++) {
+	for (int type = 1; type < 3; type++) {
 		DAMAGE.type = type;
-		//range of damage for uniform; std dev for Gaussian
-		for (int range = 0; range < 16; range++) {
-			DAMAGE.range = range;
-			ga = new GeneticAlgorithm(DAMAGE.type, DAMAGE.range, 1000);
-			for (int iter = 0; iter < iterations; iter++) {
-				ga->run(iter, 100);
-				ga->reset();
+		//range for uniform mutation
+		for (int mrange = 2; mrange < 18; mrange += 2) {
+			MUTATE.range = mrange;
+			//range of damage for uniform; std dev for Gaussian
+			for (int drange = 0; drange < 16; drange++) {
+				DAMAGE.range = drange;
+				ga = new GeneticAlgorithm(DAMAGE.type, DAMAGE.range, 1000);
+				for (int iter = 0; iter < iterations; iter++) {
+					ga->run(iter, 100);
+					ga->reset();
+				}
 			}
 		}
 	}

@@ -29,10 +29,11 @@ private:
 
 	ofstream *csv;
 	void printCsvHeader(time_t time);
+	void checkForBest(int index);
 public:
 	Population();
 	~Population();
-	void calcAvgs();
+	void calculateAverageGenes();
 	void print();
 	void openCsv(string filename, time_t time);
 	void printToCsv(int generation);

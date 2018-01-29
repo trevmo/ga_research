@@ -20,11 +20,15 @@ namespace fs = experimental::filesystem;
 Population::Population() {
 	//initialize an array of individuals with NULL genomes
 	individuals = new Individual *[POP_SIZE];
-	for (int i = 0; i < POP_SIZE; i++)
+	avgFit = 0;
+	bestFit = 0;
+	for (int i = 0; i < POP_SIZE; i++) {
 		//initialize each individual in the array with a random genome
 		individuals[i] = new Individual(GENOME_LENGTH);
-	
-	calcAvgs();
+		avgFit += individuals[i]->calcFit();
+		checkForBest(i);
+	}
+	avgFit /= POP_SIZE;
 }
 /**
  * Deconstruct the population.
@@ -39,7 +43,7 @@ Population::~Population() {
 void Population::print() {
 	for (int i = 0; i < POP_SIZE; i++)
 		individuals[i]->calcFit();
-	calcAvgs();
+	calculateAverageGenes();
 	printf("Average Fitness: %f Best Fitness: %f  Best Individual %d genes:", avgFit, bestFit, best);
 	for (int g = 0; g < GENOME_LENGTH; g++) {
 		printf(" %.3f", avgGenes[g]);
@@ -84,7 +88,7 @@ void Population::printCsvHeader(time_t time) {
 	*csv << "High fitness value: " << Individual::HIGH_FITNESS << endl;
 	*csv << "Armor scaling: " << Individual::ARMOR_SCALE << endl;
 	*csv << "Mean damage: " << DAMAGE.mean << endl;
-	*csv << "Range of damamge (+/- this amount): " << DAMAGE.range << endl;
+	*csv << "Range of damage (+/- this amount): " << DAMAGE.range << endl;
 	*csv << "Mutation type: " << MUTATE.type << endl;
 	*csv << "Mutation size: " << MUTATE.range << endl;
 	*csv << "Pop size: " << POP_SIZE << endl;
@@ -97,9 +101,6 @@ void Population::printCsvHeader(time_t time) {
  */
 void Population::printToCsv(int generation) {
 	if (csv->is_open()) {
-		for (int i = 0; i < POP_SIZE; i++)
-			individuals[i]->calcFit();
-		calcAvgs();
 		*csv << generation << "," << avgFit << "," << bestFit << endl;
 	}
 	else
@@ -108,27 +109,14 @@ void Population::printToCsv(int generation) {
 /**
  * Close the csv.
  */
-void Population::closeCsv()
-{
+void Population::closeCsv() {
 	if (csv->is_open())
 		csv->close();
 }
 /**
- * Calculate the average fitness and genes of the population.
+ * Calculate the average genes of the population.
  */
-void Population::calcAvgs() {
-	best = 0;
-	bestFit = individuals[0]->getFit();
-	avgFit = individuals[0]->getFit();
-	for (int i = 1; i < POP_SIZE; i++) {
-		avgFit += individuals[i]->getFit();
-		if (individuals[i]->getFit() > bestFit) {
-			best = i;
-			bestFit = individuals[i]->getFit();
-		}
-	}
-	avgFit /= POP_SIZE;
-
+void Population::calculateAverageGenes() {
 	for (int g = 0; g < GENOME_LENGTH; g++) {
 		avgGenes[g] = 0;
 		for (int i = 1; i < POP_SIZE; i++) {
@@ -156,8 +144,27 @@ void Population::nextGen() {
 		tmp[i]->mutate();
 		tmp[i + 1]->mutate();
 	}
-	for (int j = 0; j < POP_SIZE; j++)
+	// Now that the next generation has been formed, copy it over into the population
+	// for storage. While doing so, calculate the new average fitness of the population
+	// and update the index/fitness of the best individual.
+	avgFit = 0;
+	for (int j = 0; j < POP_SIZE; j++) {
 		individuals[j] = tmp[j]->copy();
+		avgFit += individuals[j]->calcFit();
+		checkForBest(j);
+	}
+	avgFit /= POP_SIZE;
+}
+/**
+ * Determine if the individual at the specified index is better than
+ * the current best individual in the population.
+ * @param index position of individual in population array
+ */
+void Population::checkForBest(int index) {
+	if (individuals[index]->getFit() > bestFit) {
+		best = index;
+		bestFit = individuals[index]->getFit();
+	}
 }
 /**
  * Perform tournament-style selection to find parents for the

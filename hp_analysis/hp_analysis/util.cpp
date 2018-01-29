@@ -17,7 +17,7 @@
  */
 double uniformDistDamage(double mean, double range)
 {
-	return mean - range + (rand() % (int)(2 * range + 1));
+	return mean - range + (rand() % (int)((2 * range) + 1));
 }
 /**
 * Generate values from a normal distribution using the Box-Muller Transform method.
@@ -38,7 +38,7 @@ double gaussianDamage(double mean, double stdDev) {
 	//so this condition alternates the return of the independent, random variables
 	//per function call
 	if (!generate)
-		return z1 * stdDev + mean;
+		return ((z1 * stdDev) + mean);
 
 	double u1, u2;
 	do
@@ -50,7 +50,7 @@ double gaussianDamage(double mean, double stdDev) {
 	double z0;
 	z0 = sqrt(-2.0 * log(u1)) * cos(twoPi * u2);
 	z1 = sqrt(-2.0 * log(u1)) * sin(twoPi * u2);
-	return z0 * stdDev + mean;
+	return ((z0 * stdDev) + mean);
 }
 /**
  * Form a filename based off of the iteration of the GA,

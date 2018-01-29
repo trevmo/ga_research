@@ -64,7 +64,7 @@ void Individual::copy(Individual source) {
  * as the fitness is the measure of how long the health lasts while undergoing
  * a particular attack.
  */
-void Individual::calcFit() {
+double Individual::calcFit() {
 	switch (DAMAGE.type)
 	{
 	case 0:
@@ -84,6 +84,7 @@ void Individual::calcFit() {
 	default:
 		break;
 	}
+	return fitness;
 }
 /**
  * Calculates the fitness of the individual when using a variable amount of damage
@@ -93,7 +94,10 @@ void Individual::calcFit() {
  */
 void Individual::calcFit(double(*calcDamage)(double, double))
 {
-	float health = genome[0];
+	//if the health has drifted (through mutation) below a value of 0,
+	//set it to 1 so that the individual's fitness does not mess with 
+	//overall analysis
+	float health = (genome[0] > 0 ? genome[0] : 1);
 	float armor = (genomeLength > 1 ? genome[1] * ARMOR_SCALE : 0);
 	//if using a Gaussian attack type, and the armor is greater than two
 	//std. dev. from the mean damage, treat the individual as having

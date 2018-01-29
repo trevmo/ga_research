@@ -30,7 +30,7 @@ public:
 	void mutate();
 	double getFit() { return fitness; }
 	double getGene(int i) { return genome[i]; }
-	void calcFit();
+	double calcFit();
 	Individual* copy();
 	void copy(Individual);
 };
