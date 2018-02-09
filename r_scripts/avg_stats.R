@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/Rscript
 
 # This script is used to average data collected in csv files. The expected format
 # of the files is:
@@ -34,20 +34,31 @@ FindAvgs <- function(batch, outputDir) {
   #
   # Returns:
   #   void (outputs results to a new file)
-  
-  avgSlopeVals <- c()
-  avgR2Vals <- c()
-  bestSlopeVals <- c()
-  bestR2Vals <- c()
+  names <- c()
+  fileNum <- 1
   for (file in batch) {
     dat <- read.csv(file, skip = 13)
     
-    avgSlopeVals <- c(avgSlopeVals, dat$slope[[1]][[1]])
-    avgR2Vals <- c(avgR2Vals, dat$r2[[1]][[1]])
-    bestSlopeVals <- c(bestSlopeVals, dat$slope[[2]][[1]])
-    bestR2Vals <- c(bestR2Vals, dat$r2[[2]][[1]])
+    for (row in 1:nrow(dat)) {
+      if (fileNum == 1) {
+        names <- c(names, row.names(dat)[row])
+        if (row == 1) {
+          slopes <- vector(mode = "double", length = nrow(dat))
+          r2s <- vector(mode = "double", length = nrow(dat))
+        }
+      }
+      for (name in names(dat)) {
+        if (name == "slope") {
+          slopes[row] <- slopes[row] + dat[row, name]
+        }
+        else {
+          r2s[row] <- r2s[row] + dat[row, name]
+        }
+      }
+    }
+    fileNum <- fileNum + 1
   }
-  
+  # 
   #form the filename by splitting out the attack type and range from
   #the first file in the batch
   outputFile <- basename(batch[[1]])
@@ -58,14 +69,13 @@ FindAvgs <- function(batch, outputDir) {
     suffix <- str[[1]][3]
   outputFile <- paste("avgs_", str[[1]][2], "_", suffix, ".csv", sep = '')
   outputPath <- file.path(outputDir, outputFile)
-  
-  #form a table from the results and output to the new file
-  labels <- c("avgSlope", "avgR2", "bestSlope", "bestR2")
-  results <- c(mean(avgSlopeVals), mean(avgR2Vals), mean(bestSlopeVals), mean(bestR2Vals))
-  table <- matrix(results, ncol = length(results), byrow = T)
-  colnames(table) <- labels
-  table <- as.table(table)
-  write.table(table, outputPath, sep = ",", col.names = T, row.names = F, append = T)
+  # 
+  # #form a data frame from the results and output to the new file
+  slopes <- slopes / (fileNum - 1)
+  r2s <- r2s / (fileNum - 1)
+  df <- data.frame(slopes, r2s)
+  rownames(df) <- names
+  write.table(df, outputPath, sep = ",", col.names = T, row.names = T, append = T)
 }
 
 args = commandArgs(trailingOnly=TRUE)
