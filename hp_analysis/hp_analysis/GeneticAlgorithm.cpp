@@ -36,18 +36,19 @@ void GeneticAlgorithm::reset()
  * Run the GA for the specified number of generations.
  * @param iteration current iteration of testing the GA
  * @param generations number of generations to run over
+ * @param printGenes bool indicating whether to print genes or fitness values
  */
-void GeneticAlgorithm::run(int iteration, int generations)
+void GeneticAlgorithm::run(int iteration, int generations, bool printGenes)
 {
 	time_t theTime;
 	time(&theTime);
 	srand(theTime);
 	DAMAGE.range = range;
 	population->openCsv(formFileName(iteration, attackType, range), theTime);
-	population->printToCsv(0);
+	population->printToCsv(0, printGenes);
 	for (int g = 0; g < generations; g++) {
 		population->nextGen();
-		population->printToCsv(g + 1);
+		population->printToCsv(g + 1, printGenes);
 	}
 	population->closeCsv();
 	this_thread::sleep_for(chrono::milliseconds(delay));

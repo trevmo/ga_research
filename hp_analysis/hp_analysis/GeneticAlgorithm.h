@@ -17,6 +17,6 @@ private:
 public:
 	GeneticAlgorithm(int attackType, int range, int delay);
 	void reset();
-	void run(int iteration, int generations);
+	void run(int iteration, int generations, bool printGenes);
 };
 

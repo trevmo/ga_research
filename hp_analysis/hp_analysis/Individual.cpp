@@ -98,7 +98,9 @@ void Individual::calcFit(double(*calcDamage)(double, double))
 	//set it to 1 so that the individual's fitness does not mess with 
 	//overall analysis
 	float health = (genome[0] > 0 ? genome[0] : 1);
-	float armor = (genomeLength > 1 ? genome[1] * ARMOR_SCALE : 0);
+	float armor = 0;
+	if (genomeLength > 1)
+		armor = (genome[1] > 0 ? genome[1] * ARMOR_SCALE : 0);
 	//if using a Gaussian attack type, and the armor is greater than two
 	//std. dev. from the mean damage, treat the individual as having
 	//impenetrable armor

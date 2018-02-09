@@ -15,7 +15,7 @@ using namespace std;
 */
 
 const int POP_SIZE = 100;
-const int GENOME_LENGTH = 1;
+const int GENOME_LENGTH = 2;
 
 class Population {
 private:
@@ -36,7 +36,9 @@ public:
 	void calculateAverageGenes();
 	void print();
 	void openCsv(string filename, time_t time);
-	void printToCsv(int generation);
+	void printToCsv(int generation, bool printGenes);
+	void printFitness(int generation);
+	void printGenes(int generations);
 	void closeCsv();
 	void nextGen();
 	int selectParent();

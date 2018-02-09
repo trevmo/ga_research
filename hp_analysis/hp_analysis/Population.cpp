@@ -71,7 +71,6 @@ void Population::openCsv(string filename, time_t time) {
 	if (csv->fail())
 		cout << "fail";
 	printCsvHeader(time);
-	*csv << "Generation,AvgFit,BestFit\n";
 }
 /**
  * Helper method to output the header info for a csv of test data.
@@ -95,16 +94,51 @@ void Population::printCsvHeader(time_t time) {
 	*csv << "Tournament size: " << TOURN_SIZE << endl;
 }
 /**
+* Output the stats of the specified generation of the population to the
+* previously opened csv file.
+* @param generation current generation value
+* @param genes bool indicating whether to print the genes or fitness values
+*/
+void Population::printToCsv(int generation, bool genes) {
+	if (csv->is_open()) {
+		if (genes) {
+			if (generation == 0) {
+				*csv << "Generation,Average Health";
+				if (GENOME_LENGTH > 1)
+					*csv << ",Average Armor";
+				*csv << ",Average Fitness" << endl;
+			}
+			printGenes(generation);
+		}
+		else {
+			if (generation == 0)
+				*csv << "Generation,AvgFit,BestFit\n";
+			printFitness(generation);
+		}
+	}
+	else
+		cout << ".csv file has not yet been opened.\n";
+}
+/**
  * Output the stats of the specified generation of the population to the
  * previously opened csv file.
  * @param generation current generation value
  */
-void Population::printToCsv(int generation) {
-	if (csv->is_open()) {
-		*csv << generation << "," << avgFit << "," << bestFit << endl;
+void Population::printFitness(int generation) {
+	*csv << generation << "," << avgFit << "," << bestFit << endl;
+}
+/**
+* Output the average genes of the specified generation of the population to the
+* previously opened csv file.
+* @param generation current generation value
+*/
+void Population::printGenes(int generation) {
+	*csv << generation << ",";
+	calculateAverageGenes();
+	for (int g = 0; g < GENOME_LENGTH; g++) {
+		*csv << avgGenes[g] << ",";
 	}
-	else
-		cout << ".csv file has not yet been opened.\n";
+	*csv << avgFit << endl;
 }
 /**
  * Close the csv.
@@ -118,7 +152,7 @@ void Population::closeCsv() {
  */
 void Population::calculateAverageGenes() {
 	for (int g = 0; g < GENOME_LENGTH; g++) {
-		avgGenes[g] = 0;
+		avgGenes[g] = individuals[0]->getGene(g);
 		for (int i = 1; i < POP_SIZE; i++) {
 			avgGenes[g] += individuals[i]->getGene(g);
 		}
