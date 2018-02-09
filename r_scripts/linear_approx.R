@@ -1,13 +1,11 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/Rscript
 
 # This script is used to find the linear approximation, and associated
 # values, from a batch of csv files. Each file is expected to have a
-# header of 9 lines listing info about the trial run, followed by
-# 100 rows of 3 columns of data.
+# header of 13 lines listing info about the trial run, followed by
+# 100 rows of n columns of data.
 #
 # @author trevmo
-
-require(ggplot2)
 
 FindLinearApprox <- function (xvals, yvals) {
   # Calculates the linear approximation and retrieves the corresponding
@@ -41,16 +39,22 @@ FindResults <- function(filename) {
   header <- read.csv(filename, nrows=12)
   write.csv(header, outputPath, row.names = FALSE)
   dat <- read.csv(filename, skip = 13)
-  gen <- dat$Generation
-  avg <- dat$AvgFit
-  best <- dat$BestFit
-  #plot(x,y)
-  avgFinal <- FindLinearApprox(gen, avg)
-  bestFinal <- FindLinearApprox(gen, best)
-  
-  table <- matrix(c(avgFinal, bestFinal), ncol = 2, byrow = T)
+  approxVals <- c()
+  names <- c()
+  counter = 0
+  for (col in names(dat)) {
+    if (col == "Generation") {
+      gen <- dat[[col]]
+    } else {
+      vals <- FindLinearApprox(gen, dat[[col]])
+      approxVals <- c(approxVals, vals)
+      names <- c(names, col)
+      counter <- counter + 1
+    }
+  }
+  table <- matrix(approxVals, ncol = counter, byrow = T)
   colnames(table) <- c("slope", "r2")
-  rownames(table) <- c("avg", "best")
+  rownames(table) <- names
   table <- as.table(table)
   #write the table out to the file created earlier
   write.table(table, outputPath, sep = ",", col.names = T, row.names = T, append = T)
