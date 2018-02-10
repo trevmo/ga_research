@@ -52,7 +52,9 @@ FindResults <- function(filename) {
       counter <- counter + 1
     }
   }
-  table <- matrix(approxVals, ncol = counter, byrow = T)
+  table <- matrix(approxVals, ncol = counter, byrow = F)
+  #take the transpose to have variables as rows and knowns as columns
+  table <- t(table)
   colnames(table) <- c("slope", "r2")
   rownames(table) <- names
   table <- as.table(table)
