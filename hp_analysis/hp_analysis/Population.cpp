@@ -83,7 +83,7 @@ void Population::printCsvHeader(time_t time) {
 	*csv << asctime(timeinfo);
 	*csv << "Attack type: " << DAMAGE.type << endl;
 	*csv << "Fixed damage amount: " << DAMAGE.mean << endl;
-	*csv << "Max init gene value: " << Individual::MAX_INIT_VAL << endl;
+	*csv << "Max init gene value: " << Individual::MAX_INIT_HEALTH << ", " << Individual::MAX_INIT_ARMOR << endl;
 	*csv << "High fitness value: " << Individual::HIGH_FITNESS << endl;
 	*csv << "Armor scaling: " << Individual::ARMOR_SCALE << endl;
 	*csv << "Mean damage: " << DAMAGE.mean << endl;

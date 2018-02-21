@@ -26,8 +26,16 @@ Individual::Individual() {
 Individual::Individual(int genomeLength) {
 	this->genomeLength = genomeLength;
 	genome = new int[genomeLength];
+	int modVal = 0;
+	//if the max init val is <= this threshold, randomly initialize
+	//otherwise, simply set to the max init val
+	int randInitThreshold = 10;
 	for (int i = 0; i < genomeLength; i++) {
-		genome[i] = 1 + rand() % MAX_INIT_VAL;
+		modVal = (i == HEALTH_GENE ? MAX_INIT_HEALTH : MAX_INIT_ARMOR);
+		if (modVal > randInitThreshold)
+			genome[i] = modVal;
+		else
+			genome[i] = 1 + rand() % modVal;
 	}
 }
 /**
@@ -152,12 +160,9 @@ void Individual::print() {
  * uniform mutation, but this could be expanded to allow for other types as well.
  */
 void Individual::mutate() {
-	int m;
 	for (int i = 0; i < genomeLength; i++) {
 		// 0 - uniform, may have different kind of mutation later
-		if (MUTATE.type == 0) {
-			m = (rand() % MUTATE.range - (MUTATE.range / 2));
-			genome[i] += m;
-		}
+		if (i != MUTATE.skipGene && MUTATE.type == 0)
+			genome[i] += (rand() % MUTATE.range - (MUTATE.range / 2));
 	}
 }

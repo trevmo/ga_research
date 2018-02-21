@@ -19,9 +19,13 @@ private:
 	void calcFit(double(*calcDamage)(double, double));
 	bool exceedsMaxDamage(float value, int factor);
 public:
-	static const int MAX_INIT_VAL = 10;
 	static const int HIGH_FITNESS = 1000;
 	static const double ARMOR_SCALE;
+
+	static const int HEALTH_GENE = 0;
+	static const int MAX_INIT_HEALTH = 100;
+	static const int ARMOR_GENE = 1;
+	static const int MAX_INIT_ARMOR = 10;
 
 	Individual();
 	Individual(int genomeLength);
