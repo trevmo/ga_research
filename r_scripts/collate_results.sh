@@ -12,9 +12,10 @@
 R_SCRIPTS_DIR=$1
 DATA_DIR=$2
 
-data_dirs=$(ls $DATA_DIR)
+data_dirs=$(ls -d -1 $DATA_DIR/**)
 for dir in $data_dirs; do
    cd $dir
+   pwd
    $R_SCRIPTS_DIR/linear_approx.R $(ls *.csv)
    $R_SCRIPTS_DIR/avg_stats.R $(ls stats/*.csv)
    cd ..

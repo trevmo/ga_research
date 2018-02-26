@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/Rscript
 
 # This script is used to collate the average results after collecting test data
 # while varying the mutate range as well as the damage range.

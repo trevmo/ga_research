@@ -53,6 +53,6 @@ PlotResults <- function(batch, prefix) {
 
 args = commandArgs(trailingOnly=TRUE)
 if (length(args) < 1) {
-  stop("You must specify csv file(s) on the command line.n")
+  stop("You must specify csv file(s) on the command line.")
 }
 PlotResults(args, strsplit(basename(args[1]), "_")[[1]][2])
