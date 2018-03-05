@@ -23,32 +23,32 @@ BatchFiles <- function (files, numTrialsPerCombo) {
   batches <- matrix(files, ncol = numCombos, nrow = numTrialsPerCombo)
   return(batches)
 }
-GetAvgs <- function(batch, outputDir) {
+GetAvgs <- function(batch, numGenerations, outputDir) {
   # Calculate the average results from a batch of csv files.
   #
   # Arg:
   #   batch: vector of filenames/paths
+  #   numGenerations: number of rows of data per file
   #   outputDir: name of the directory to place the output file
   #
   # Returns:
   #   void (outputs results to a new file)
   
-  avgGen <- rep(0,100)
-  avgAvg <- rep(0,100)
-  avgBest <- rep(0,100)
+  firstFile <- read.csv(batch[1], skip = 13)
+  labels <- colnames(firstFile)
+  avgMatrix <- matrix(0, nrow = numGenerations, ncol = ncol(firstFile))
+  
   for (file in batch) {
     dat <- read.csv(file, skip = 14)
     
     for (r in 1:nrow(dat)) {
-      avgGen[r] <- avgGen[r] + dat[r, 1] 
-      avgAvg[r] <- avgAvg[r] + dat[r, 2]
-      avgBest[r] <- avgBest[r] + dat[r, 3]
+      for (c in 1:ncol(dat)) {
+        avgMatrix[r, c] <- avgMatrix[r, c] + dat[r, c]
+      }
     }
   }
   
-  avgGen <- avgGen / length(batch)
-  avgAvg <- avgAvg / length(batch)
-  avgBest <- avgBest / length(batch)
+  avgMatrix <- avgMatrix / length(batch)
   
   #form the filename by splitting out the attack type and range from
   #the first file in the batch
@@ -58,8 +58,7 @@ GetAvgs <- function(batch, outputDir) {
   outputPath <- file.path(outputDir, outputFile)
   
   #form a table from the results and output to the new file
-  labels <- c("Generation", "Average Fitness", "Best Fitness")
-  table <- cbind(avgGen, avgAvg, avgBest)
+  table <- as.table(avgMatrix)
   colnames(table) <- labels
   table <- as.table(table)
   write.table(table, outputPath, sep = ",", col.names = T, row.names = F, append = T)
@@ -69,9 +68,11 @@ args = commandArgs(trailingOnly=TRUE)
 if (length(args) < 1) {
   stop("You must specify csv file(s) on the command line.n")
 }
-batchedFiles <- BatchFiles(args, 20)
+numGens <- strtoi(args[1])
+batchSize <- strtoi(args[2])
+batchedFiles <- BatchFiles(tail(args, length(args)-2), batchSize)
 dirName <- "avgs"
 dir.create(dirName, showWarnings = F)
 for (col in 1:ncol(batchedFiles)) {
-  GetAvgs(batchedFiles[ , col], dirName)
+  GetAvgs(batchedFiles[ , col], numGens, dirName)
 }
