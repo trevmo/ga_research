@@ -7,7 +7,7 @@
 require(tidyr)
 require(ggplot2)
 
-FormPlot <- function(data, title) {
+FormPlot <- function(data, type, title) {
   # Form a multi-variable plot from the specified matrix.
   #
   # Args:
@@ -16,7 +16,10 @@ FormPlot <- function(data, title) {
   
   png(paste(title, "png", sep = "."), width = 849, height = 535)
   gath.dat <- gather(data, value = "Slope", key = "Value", 2:ncol(data))
-  plot <- ggplot(gath.dat, aes ( x = Range, y = Slope, color = Value)) + geom_point(size = 2)
+  plot <- ggplot(gath.dat, aes ( x = Range, y = Slope, color = Value)) + 
+    geom_point(size = 2) + 
+    ggtitle(paste("Slope vs. Damage Range (", type, ")", sep='')) + 
+    theme(plot.title = element_text(face = "bold", size = 24, hjust = 0.5))
   print(plot)
   dev.off()
 }
@@ -48,7 +51,7 @@ PlotResults <- function(batch, prefix) {
   }
   rownames(slopes) <- c("Range", names)
   slopes <- as.data.frame(t(slopes))
-  FormPlot(slopes, paste(prefix, "avg_slopes_for_data", sep = "_"))
+  FormPlot(slopes, prefix, paste(prefix, "avg_slopes_for_data", sep = "_"))
 }
 
 args = commandArgs(trailingOnly=TRUE)
