@@ -14,12 +14,17 @@ FormPlot <- function(data, type, title) {
   #   data: matrix of data to plot
   #   title: title label for the graph
   
-  png(paste(title, "png", sep = "."), width = 849, height = 535)
+  png(paste(title, "png", sep = "."), width = 1000, height = 700)
   gath.dat <- gather(data, value = "Slope", key = "Value", 2:ncol(data))
   plot <- ggplot(gath.dat, aes ( x = Range, y = Slope, color = Value)) + 
-    geom_point(size = 2) + 
+    geom_point(size = 3) + 
     ggtitle(paste("Slope vs. Damage Range (", type, ")", sep='')) + 
-    theme(plot.title = element_text(face = "bold", size = 24, hjust = 0.5))
+    theme(plot.title = element_text(face = "bold", size = 24, hjust = 0.5)) +
+    theme(axis.title = element_text(size = 20)) +
+    theme(axis.text = element_text(size = 12)) + 
+    theme(legend.text = element_text(size = 12)) +
+    theme(legend.title = element_text(size = 12)) +
+    theme(legend.position = "bottom")
   print(plot)
   dev.off()
 }
