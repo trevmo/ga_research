@@ -144,7 +144,7 @@ void Individual::calcFit(double(*calcDamage)(double, double))
  * @return boolean indicating if it exceeds or not
  */
 bool Individual::exceedsMaxDamage(float value, int factor) {
-	return (value > ((factor * DAMAGE.range) + DAMAGE.mean));
+	return (value >= ((factor * DAMAGE.range) + DAMAGE.mean));
 }
 /**
  * Print out the genome and fitness of the individual.

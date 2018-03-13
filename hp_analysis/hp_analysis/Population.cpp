@@ -79,19 +79,19 @@ void Population::openCsv(string filename, time_t time) {
 void Population::printCsvHeader(time_t time) {
 	struct tm * timeinfo;
 	timeinfo = localtime(&time);
-	*csv << "Seed " << time << endl;
+	*csv << "Seed," << time << endl;
 	*csv << asctime(timeinfo);
-	*csv << "Attack type: " << DAMAGE.type << endl;
-	*csv << "Fixed damage amount: " << DAMAGE.mean << endl;
-	*csv << "Max init gene value: " << Individual::MAX_INIT_HEALTH << ", " << Individual::MAX_INIT_ARMOR << endl;
-	*csv << "High fitness value: " << Individual::HIGH_FITNESS << endl;
-	*csv << "Armor scaling: " << Individual::ARMOR_SCALE << endl;
-	*csv << "Mean damage: " << DAMAGE.mean << endl;
-	*csv << "Range of damage (+/- this amount): " << DAMAGE.range << endl;
-	*csv << "Mutation type: " << MUTATE.type << endl;
-	*csv << "Mutation size: " << MUTATE.range << endl;
-	*csv << "Pop size: " << POP_SIZE << endl;
-	*csv << "Tournament size: " << TOURN_SIZE << endl;
+	*csv << "Attack type," << DAMAGE.type << endl;
+	*csv << "Fixed damage amount," << DAMAGE.mean << endl;
+	*csv << "Max init gene value," << Individual::MAX_INIT_HEALTH << ", " << Individual::MAX_INIT_ARMOR << endl;
+	*csv << "High fitness value," << Individual::HIGH_FITNESS << endl;
+	*csv << "Armor scaling," << Individual::ARMOR_SCALE << endl;
+	*csv << "Mean damage," << DAMAGE.mean << endl;
+	*csv << "Range of damage (+/- this amount)," << DAMAGE.range << endl;
+	*csv << "Mutation type," << MUTATE.type << endl;
+	*csv << "Mutation size," << MUTATE.range << endl;
+	*csv << "Pop size," << POP_SIZE << endl;
+	*csv << "Tournament size," << TOURN_SIZE << endl;
 }
 /**
 * Output the stats of the specified generation of the population to the
