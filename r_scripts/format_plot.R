@@ -32,7 +32,6 @@ FormatPlot <- function(plot) {
   #
   # Returns:
   #   formatted plot
-  label.font <- 12
   title.font <- 20
   title.margin <- margin(t = 10, r = 0, b = 14, l = 0, unit = "pt")
   increment <- 10
@@ -41,13 +40,10 @@ FormatPlot <- function(plot) {
   xrange <- ggplot_build(plot)$layout$panel_ranges[[1]]$x.range
   
   return(plot +
-    geom_point(size = 3) +
+    geom_point(size = 1.5) +
     scale_x_continuous(breaks = seq(0, round(xrange[2]), CalculateAxisTicks(xrange, increment))) +
     scale_y_continuous(breaks = seq(0, round(yrange[2]), CalculateAxisTicks(yrange, increment))) +
-    theme(plot.title = element_text(face = "bold", size = title.font, hjust = 0.5, margin = title.margin)) +
-    theme(axis.title = element_text(size = title.font)) +
-    theme(axis.text = element_text(size = label.font)) +
-    theme(legend.text = element_text(size = label.font)) +
-    theme(legend.title = element_text(size = label.font)) +
+    theme(plot.title = element_text(size = title.font, hjust = 0.5, margin = title.margin)) +
+    theme(axis.title = element_text(size = title.font-4)) +
     theme(legend.position = "bottom"))
 }

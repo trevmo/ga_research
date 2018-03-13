@@ -6,6 +6,7 @@
 
 require(tidyr)
 require(ggplot2)
+source("format_plot.R")
 
 FormPlot <- function(data, type, title) {
   # Form a multi-variable plot from the specified matrix.
@@ -14,19 +15,11 @@ FormPlot <- function(data, type, title) {
   #   data: matrix of data to plot
   #   title: title label for the graph
   
-  png(paste(title, "png", sep = "."), width = 1000, height = 700)
   gath.dat <- gather(data, value = "Slope", key = "Value", 2:ncol(data))
-  plot <- ggplot(gath.dat, aes ( x = Range, y = Slope, color = Value)) + 
-    geom_point(size = 3) + 
-    ggtitle(paste("Slope vs. Damage Range (", type, ")", sep='')) + 
-    theme(plot.title = element_text(face = "bold", size = 24, hjust = 0.5)) +
-    theme(axis.title = element_text(size = 20)) +
-    theme(axis.text = element_text(size = 12)) + 
-    theme(legend.text = element_text(size = 12)) +
-    theme(legend.title = element_text(size = 12)) +
-    theme(legend.position = "bottom")
-  print(plot)
-  dev.off()
+  plot <- FormatPlot(ggplot(gath.dat, aes ( x = Range, y = Slope, color = Value)) +
+    ggtitle(paste("Slope vs. Damage Range (", type, ")", sep='')))
+  
+  ggsave(paste(title, "png", sep = "."), plot = plot, width = 10)
 }
 PlotResults <- function(batch, prefix) {
   # Pull the data out of the batch of files and form plots.
