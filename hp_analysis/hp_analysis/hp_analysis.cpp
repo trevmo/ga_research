@@ -17,10 +17,10 @@ struct Mutate MUTATE;
 
 int main() {
 	int iterations = 20;
+	int generations = 250;
 	GeneticAlgorithm *ga = NULL;
 	//use uniform mutation
 	MUTATE.type = 0;
-	// do not mutate health
 	MUTATE.skipGene = -1;
 	MUTATE.isVariable = true;
 
@@ -30,7 +30,7 @@ int main() {
 		DAMAGE.type = type;
 		cout << "Damage type: " << type << endl;
 		//range for uniform mutation
-		for (int mrange = 6; mrange < 8; mrange += 2) {
+		for (int mrange = 7; mrange < 8; mrange += 2) {
 			MUTATE.range = mrange;
 			cout << "\tMutate range: " << mrange << endl;
 			//range of damage for uniform; std dev for Gaussian
@@ -40,7 +40,7 @@ int main() {
 				ga = new GeneticAlgorithm(DAMAGE.type, DAMAGE.range, 1000);
 				for (int iter = 0; iter < iterations; iter++) {
 					cout << "\t\t\tTrial: " << iter << endl;
-					ga->run(iter, 100, true);
+					ga->run(iter, generations, true);
 					ga->reset();
 				}
 			}

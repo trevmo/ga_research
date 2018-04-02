@@ -9,6 +9,7 @@
 #include "Individual.h"
 #include "util.h"
 #include <cstdlib>
+#include <iostream>
 
 
 const double Individual::ARMOR_SCALE = 0.1;
@@ -61,6 +62,7 @@ Individual* Individual::copy() {
  * @param source original individual to copy
  */
 void Individual::copy(Individual source) {
+	genomeLength = source.genomeLength;
 	// deep copy
 	for (int i = 0; i < genomeLength; i++) {
 		genome[i] = source.genome[i];
@@ -127,6 +129,7 @@ void Individual::calcFit(double(*calcDamage)(double, double))
 		//if there is armor in play, subtract that value from the damage
 		//and then apply the damage to the health
 		damage -= armor;
+
 		if (damage > 0) {
 			//if the armor has not completely eliminated the damage
 			//then count the number of hits the individual can take
