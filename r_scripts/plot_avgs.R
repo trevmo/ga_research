@@ -16,8 +16,7 @@ FormPlot <- function(data, type, title) {
   #   title: title label for the graph
   
   gath.dat <- gather(data, value = "Slope", key = "Value", 2:ncol(data))
-  plot <- FormatPlot(ggplot(gath.dat, aes ( x = Range, y = Slope, color = Value)) +
-    ggtitle(paste("Slope vs. Damage Range (", type, ")", sep='')))
+  plot <- FormatPlot(ggplot(gath.dat, aes ( x = Range, y = Slope, color = Value)))
   
   ggsave(paste(title, "png", sep = "."), plot = plot, width = 10)
 }

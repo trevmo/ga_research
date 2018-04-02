@@ -6,17 +6,19 @@ GetTitle <- function(filename) {
   str <- strsplit(filename, "[_ .]+")
   return(paste("Damage Type: ", str[[1]][2], " / ", "Range: ", str[[1]][3], sep = ''))
 }
-PlotFiles <- function(files) {
+PlotFiles <- function(files, skipLines) {
+  dirName <- "avg_data/plots/"
+  dir.create(dirName, showWarnings = F)
   for (file in files) {
-    dat <- read.csv(file)
+    dat <- read.csv(file, skip=skipLines)
     gath.dat <- gather(dat, value = "Average.Value", key = "Value", 2:ncol(dat))
-    plot <- FormatPlot(ggplot(gath.dat, aes ( x = Generation, y = Average.Value, color = Value))+
-                         ggtitle(GetTitle(basename(file))))
-    ggsave(paste(basename(file), "png", sep = "."), plot = plot, width = 10)
+    plot <- FormatPlot(ggplot(gath.dat, aes ( x = Generation, y = Average.Value, color = Value)))
+    ggsave(paste(paste(dirName, basename(file), sep = ""), "png", sep = "."), plot = plot, width = 10)
   }
 }
 args = commandArgs(trailingOnly=TRUE)
-if (length(args) < 1) {
+if (length(args) < 2) {
   stop("You must specify csv file(s) on the command line.n")
 }
-PlotFiles(args)
+skipLines <- strtoi(args[1])
+PlotFiles(tail(args, length(args)-1), skipLines)

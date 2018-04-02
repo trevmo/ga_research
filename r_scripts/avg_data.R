@@ -54,7 +54,11 @@ GetAvgs <- function(batch, numGenerations, outputDir) {
   #the first file in the batch
   outputFile <- basename(batch[[1]])
   str <- strsplit(outputFile, "[_ ]+")
-  outputFile <- paste("avgs_", str[[1]][1], "_", str[[1]][[2]], ".csv", sep = '')
+  if (nchar(str[[1]][2]) == 1)
+    suffix <- paste("0", str[[1]][2], sep = '')
+  else
+    suffix <- str[[1]][2]
+  outputFile <- paste("avgs_", str[[1]][1], "_", suffix, ".csv", sep = '')
   outputPath <- file.path(outputDir, outputFile)
   
   #form a table from the results and output to the new file
@@ -71,7 +75,7 @@ if (length(args) < 1) {
 numGens <- strtoi(args[1])
 batchSize <- strtoi(args[2])
 batchedFiles <- BatchFiles(tail(args, length(args)-2), batchSize)
-dirName <- "avgs"
+dirName <- "avg_data"
 dir.create(dirName, showWarnings = F)
 for (col in 1:ncol(batchedFiles)) {
   GetAvgs(batchedFiles[ , col], numGens, dirName)
