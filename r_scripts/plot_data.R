@@ -13,7 +13,8 @@ require(ggplot2)
 PlotData <- function(filename) {
   dat <- read.csv(filename)
   bygen <- gather(dat, value = "Fitness", key = "Type", Average.Fitness, Best.Fitness)
-  ggplot(bygen, aes ( x = Generation, y = Fitness, color = Type)) + geom_point(size = 1.5)
+  ggplot(bygen, aes ( x = Generation, y = Fitness, color = Type)) +
+    geom_point(size = 1.5, aes(shape = Type, fill = Type))
 }
 
 args = commandArgs(trailingOnly=TRUE)

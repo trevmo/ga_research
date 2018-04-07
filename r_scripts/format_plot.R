@@ -22,7 +22,6 @@ FormatPlot <- function(plot) {
   return(plot +
     scale_color_grey(start = 0.2, end = 0.8) +
     theme_bw() +
-    geom_point(size = 1.5) +
     theme(axis.title = element_text(size = axis.font)) +
     theme(legend.position = c(0.09,0.9)) +
     theme(legend.background = element_rect(colour = 'black', fill = 'white', linetype='solid', size = 1.0)))

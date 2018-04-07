@@ -16,7 +16,8 @@ FormPlot <- function(data, type, title) {
   #   title: title label for the graph
   
   gath.dat <- gather(data, value = "Slope", key = "Value", 2:ncol(data))
-  plot <- FormatPlot(ggplot(gath.dat, aes ( x = Range, y = Slope, color = Value)))
+  plot <- FormatPlot(ggplot(gath.dat, aes ( x = Range, y = Slope, color = Value))) +
+    geom_point(size = 1.5, aes(shape = Value, fill = Value))
   
   ggsave(paste(title, "png", sep = "."), plot = plot, width = 10)
 }
