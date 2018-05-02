@@ -53,3 +53,5 @@ gaussian_dist/
 results/
 read_csv.R
 mutate_test/
+paper/
+tmp/
