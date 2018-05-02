@@ -19,7 +19,8 @@ PlotFiles <- function(files, skipLines, includeFitness) {
   #   skipLines: number of (header) lines to skip in each file
   #   includeFitness: {0 - do not include; 1 - include}
   
-  dirName <- "avg_data/plots/"
+  path <- dirname(files[1])
+  dirName <- paste(path, "/plots/", sep="")
   dir.create(dirName, showWarnings = F)
   for (file in files) {
     dat <- read.csv(file, skip=skipLines)
