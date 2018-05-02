@@ -15,7 +15,7 @@ using namespace std;
 */
 
 const int POP_SIZE = 100;
-const int GENOME_LENGTH = 2;
+const int GENOME_LENGTH = 1;
 
 class Population {
 private:

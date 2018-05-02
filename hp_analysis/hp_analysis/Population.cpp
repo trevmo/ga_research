@@ -66,6 +66,12 @@ void Population::openCsv(string filename, time_t time) {
 			fs::create_directory(dirName);
 		path += dirName;
 	}
+	else if (DAMAGE.isVariable) {
+		string dirName = "damage" + to_string(DAMAGE.mean);
+		if (!fs::is_directory(fs::status(dirName)))
+			fs::create_directory(dirName);
+		path += dirName;
+	}
 	path += "/" + filename;
 	csv->open(path.c_str(), fstream::out);
 	if (csv->fail())

@@ -11,6 +11,7 @@ struct Damage {
 	int type;
 	double mean;
 	double range;
+	bool isVariable;
 };
 extern struct Damage DAMAGE;
 

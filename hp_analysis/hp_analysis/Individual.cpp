@@ -121,8 +121,9 @@ void Individual::calcFit(double(*calcDamage)(double, double))
 		//if there is armor in play, subtract that value from the damage
 		//and then apply the damage to the health
 		damage -= armor;
-
-		if (damage > 0) {
+		// if condition is (damage > 0), then damage can potentially be a decimal
+		// value between 0-1, resulting in a fitness > health
+		if (damage > 1) {
 			//if the armor has not completely eliminated the damage
 			//then count the number of hits the individual can take
 			health -= damage;
