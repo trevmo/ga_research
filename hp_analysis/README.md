@@ -7,7 +7,7 @@ The app was developed in C++ using Visual Studio 2017. You can adjust the test r
 
 ![GA Flowchart](../diagrams/ga_flow.PNG)
 
-*Figure 2: Flowchart illustrating a run through the genetic algorithm.*
+*Figure 1: Flowchart illustrating a run through the genetic algorithm.*
 
 ## Classes
 
