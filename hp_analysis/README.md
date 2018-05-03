@@ -1,17 +1,32 @@
 # HP Analysis
 
 ## Overview
-This project was developed in C++ in Visual Studio 2017. It compiles into an automated app for collecting data based off of the parameterization in the project. All results get stored into csv files for further analysis.
+The HP Analysis app automates the process of testing different configurations of the genetic algorithm and collecting corresponding data. It stores the results in csv files for further analysis. 
+
+The app was developed in C++ using Visual Studio 2017. You can adjust the test runs by the project's parameters.
+
+![GA Flowchart](../diagrams/ga_flow.PNG)
+
+*Figure 2: Flowchart illustrating a run through the genetic algorithm.*
 
 ## Classes
+
+![Class Diagram](../diagrams/class_diagram.PNG)
+
+*Figure 2: Class diagram for the project.*
+
 ### Genetic Algorithm
-The Genetic Algorithm class serves to setup and control the overall run of each session. It has a simple structure that primarily relies on the Population and Individual classes for the bulk of the work.
+The methods of the Genetic Algorithm class setup and control the run of each session. These methods rely on functionality implemented in the Population and Individual classes to handle the bulk of the work.
 
 ### Population
-The Population class initializes a population of individuals for use in the genetic algorithm. It handles the higher level parameters, adapts each successive generation, and selects parents from the population. It also has some methods for calculating average values from the population's members as well as outputting those values to stdout or a csv file.
+The Population class contains functionality to initialize a population of individuals for use in the genetic algorithm. Its methods handle the higher level parameters, adapt each successive generation, and select parents from the population. The class also has some methods for calculating average values from the population's members as well as outputting those values to stdout or a csv file.
 
 ### Individual
 The Individual class defines the structure of a given member of the population. The core properties are the genome and fitness value. Aside from helper methods, the class also has methods for performing uniform mutation and calculating the fitness. This fitness calculation relies on utility functions for acquiring value from uniform and Gaussian distributions.
+
+![Calculating Fitness](../diagrams/calc_fitness_flow.PNG)
+
+*Figure 3: Flowchart illustrating the process of calculating an Individual's fitness.*
 
 ### Other Components
 #### Utility

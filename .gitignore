@@ -44,6 +44,7 @@ project1/[^results]*.csv
 *.bat
 x64/
 *.PNG
+!diagrams/*.PNG
 testing/
 initial_files/
 *stdafx*
