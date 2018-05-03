@@ -2,8 +2,9 @@
 
 ## Overview
 These scripts were created to simplify data analysis for the research project. Each script was designed with a specific purpose in mind:
+
 | Name        | Description           | Usage  |
-| ------------- |:-------------:| -----:|
+| ------------- |:-------------:| -----|
 | avg_data.R     | Averages the data collected in csv files. | ```./avg_data.R``` *numGenerations* *batchSize* *files*|
 | avg_stats.R     | Averages the statistical data collected in csv files. | ```./avg_stats.R``` *files* |
 | collate_results.sh | Bash script for running sequence of R scripts. | ```./collate_results``` */path/to/R/scripts* */path/to/data* |
