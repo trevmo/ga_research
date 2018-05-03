@@ -8,11 +8,13 @@
 ## Summary
 
 ### Background
-Starting in the fall of 2017, I worked with Dr. Soule to conduct some research regarding genetic algorithms. At the time, I was taking his Evolutionary Computation class and looking for more experience in this subfield of Machine Learning.
+Starting in the fall of 2017, I worked with Dr. Soule to research genetic algorithms. At the time, I was taking his Evolutionary Computation class and looking for more experience in this subfield of Machine Learning.
 
 Over the course of the next one and a half semesters, we worked on analyzing how to improve the playability of video games through evolutionary computation.
 
 ### Project Overview
+The premise of this research involves games where the player is facing opponents (creatures, bots, etc.) that they must defeat through some form of attack. The player may have a variety of weapons at their disposal that have different levels or types of damage. The goal of the research is to improve the flow of a game so as to keep it interesting for the player, avoiding the extremes of being too easy and boring or too hard and impossible to win.
+
 Given a population of individuals with a single gene, representing health, how does the fitness evolve while undergoing different types of damage. In other words, if applying:
 - a constant damage OR
 - a damage from a uniform distribution OR
@@ -27,7 +29,7 @@ Additionally, how does incorporating a second gene, representing armor, affect t
 ## Contents
 
 ### hp_analysis
-```hp_analysis/``` contains the code used for collecting data in the research project. It follows a standard genetic algorithm structure with classes for the population and individuals. The algorithm is heavily parameterized and structured in a way to make it easy to test a number of different values for each parameter in one session.
+```hp_analysis/``` contains the code used for collecting data in the research project. It follows a standard genetic algorithm structure with classes for the population and individuals. The algorithm is heavily parameterized and structured in a way to make it easy to test a number of different values for each parameter in one session. See the directory's README for more info.
 
 ### r_scripts
-```r_scripts/``` contains a variety of scripts used for analyzing the collected data. These scripts handle tasks like averaging and plotting the data. They are primarily targeted for this project with varying levels of generalization.
+```r_scripts/``` contains a variety of scripts used for analyzing the collected data. These scripts handle tasks like averaging and plotting the data. They are primarily targeted for this project with varying levels of generalization. See the directory's README for more info.
