@@ -8,6 +8,7 @@ These scripts were created to simplify data analysis for the research project. E
 | avg_data.R     | Averages the data collected in csv files. | ```./avg_data.R``` *numGenerations* *batchSize* *files*|
 | avg_stats.R     | Averages the statistical data collected in csv files. | ```./avg_stats.R``` *files* |
 | collate_results.sh | Bash script for running sequence of R scripts. | ```./collate_results``` */path/to/R/scripts* */path/to/data* |
+| form_heatmap.R | Form a heatmap of data from average results. | ```./form_heatmap.R``` *numberOfHeaderLinesInCsvFiles* *columnNameToGetDataFrom* *files* |
 | form_table.R     | Form a table of average stats from collected data (when varying mutation and damage range). | ```./form_table.R``` */path/to/data* *filePrefix* *rangeIncrement* |
 | format_plot.R | Source file to assist with ggplot formatting. | ```source("format_plot.R")``` |
 | linear_approx.R | Calculate the linear approximation and R^2 values from the collected data. | ```./linear_approx.R``` *csvFiles* |
