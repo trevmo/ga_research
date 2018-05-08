@@ -24,12 +24,12 @@ FormHeatmap <- function(dat, filename) {
   dirName <- paste(path, "/heatmap/", sep="")
   dir.create(dirName, showWarnings = F)
   
-  plot <- ggplot(dat, aes(Range, Type)) + 
-    geom_tile(aes(fill = Value), colour = "white") + 
-    geom_text(aes(label = round(Value, 2)), angle = 90) +
-    scale_fill_gradient(low = "white", high = "red") +
-    scale_x_continuous(breaks = seq(0, max(dat$Range), by = 1), expand = c(0, 0)) +
-    scale_y_discrete(expand = c(0, 0))
+  plot <- ggplot(dat, aes(Damage.Type, Damage.Range)) + 
+    geom_tile(aes(fill = Fitness.Value), colour = "white") + 
+    geom_text(aes(label = round(Fitness.Value, 2)), colour = "white") +
+    scale_fill_gradient(low = "lightgrey", high = "black") +
+    scale_y_continuous(breaks = seq(0, max(dat$Damage.Range), by = 1), expand = c(0, 0)) +
+    scale_x_discrete(expand = c(0, 0))
   ggsave(paste(paste(dirName, "heatmap", sep = ""), "png", sep = "."), plot = plot, width = 10)
 }
 
@@ -47,7 +47,7 @@ FormatData <- function(files, skip.lines, column.name) {
   
   num.cols <- length(files) / 2
   mat <- matrix(, nrow = 2, ncol = num.cols)
-  rownames(mat) <- c("gaussian", "uniform")
+  rownames(mat) <- c("Gaussian Distribution", "Uniform Distribution")
   colnames(mat) <- 0:(num.cols-1)
   for (file in files) {
     dat <- read.csv(file, skip=skip.lines)
@@ -60,7 +60,7 @@ FormatData <- function(files, skip.lines, column.name) {
     mat[DATA.MAP[[type]], range+1] <- value
   }
   df <- melt(mat)
-  colnames(df) <- c("Type", "Range", "Value")
+  colnames(df) <- c("Damage.Type", "Damage.Range", "Fitness.Value")
   return (df)
 }
 args = commandArgs(trailingOnly=TRUE)
