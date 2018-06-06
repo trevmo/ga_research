@@ -15,6 +15,7 @@ These scripts were created to simplify data analysis for the research project. E
 | plot_avgs.R | Form a plot from the output of ```avg_stats.R```. | ```./plot_avgs.R``` *csvFiles* |
 | plot_data.R | Form a plot from a single csv file with generation, average fitness, and best fitness columns of data. | ```./plot_data.R``` *csvFile* |
 | plot_direct_avg_data.R | Plot average gene and/or fitness values over the number of generations in the test. | ```./plot_direct_avg_data.R``` *numberOfHeaderLinesInCsvFiles* *includeFitness* *csvFiles* |
+| plot_final_fitness.R | Form a plot of the final fitness values from average results. | ```./plot_final_fitness.R``` *numberOfHeaderLinesInCsvFiles* *columnNameToGetDataFrom* *files* |
 
 These scripts "get the job done" for this project, and I would recommend generalizing/optimizing them before trying to use them in another project.
 
