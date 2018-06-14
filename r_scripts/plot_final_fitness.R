@@ -25,15 +25,21 @@ FormPlot <- function(dat, filename) {
   dirName <- paste(path, paste("/", plot.name, "/", sep=""), sep="")
   dir.create(dirName, showWarnings = F)
   
+  axis.font <- 20 #16
+  secondary.font <- axis.font - 6
+  
   plot <- ggplot(dat, aes(x = Damage.Range, y = Fitness.Value, color = Damage.Type)) +
     scale_color_grey(start = 0.0, end = 0.35) +
     theme_bw() +
-    theme(axis.title = element_text(size = 16)) +
-    theme(legend.position = c(0.9,0.9)) +
+    theme(axis.title = element_text(size = axis.font)) +
+    theme(axis.text = element_text(size = secondary.font)) +
+    theme(legend.text = element_text(size = secondary.font)) +
+    theme(legend.title = element_text(size = secondary.font)) +
+    theme(legend.position = c(0.86,0.9)) +
     theme(legend.background = element_rect(colour = 'black', fill = 'white', linetype='solid', size = 1.0)) +
     scale_x_continuous(breaks=seq(min(dat$Damage.Range),max(dat$Damage.Range), 1)) +
     geom_point(size = 1.5, aes(shape = Damage.Type, fill = Damage.Type)) +
-    geom_text(aes(label=round(Fitness.Value, 1)), hjust=-0.1, vjust=0, size = 3)
+    geom_text(aes(label=round(Fitness.Value, 1)), hjust=-0.1, vjust=0, size = 4, show.legend = FALSE)
   ggsave(paste(paste(dirName, plot.name, sep = ""), "png", sep = "."), plot = plot, width = 10)
 }
 
